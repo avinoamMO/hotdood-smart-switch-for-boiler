@@ -1,28 +1,28 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+import { BrowserRouter as Router, Route} from 'react-router-dom'
 import './App.css';
-
-class App extends Component {
+import "./styles.css";
+import SideBar from "./components/sidebar";
+import Status from './components/status/Status'
+import Analytics from './components/analytics/Analytics'
+import Schedule from './components/schedule/Schedule'
+import Settings from './components/settings/Settings'
+import Home from './components/home'
+export default class App extends Component {
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+      <Router>
+      <div>
+      <SideBar pageWrapId={"page-wrap"} outerContainerId={"App"} />
+      <Route path="/status" exact component={Status}/>
+      <Route path="/analytics" exact component={Analytics}/>
+      <Route path="/schedule" exact component={Schedule}/>
+      <Route path="/settings" exact component={Settings}/>
+      <Route path="/" exact component={Home}/>
+
+
       </div>
+      </Router>
     );
   }
 }
-
-export default App;
