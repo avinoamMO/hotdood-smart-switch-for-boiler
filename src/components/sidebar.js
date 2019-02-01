@@ -1,11 +1,11 @@
 // docs : https://github.com/negomi/react-burger-menu#animations
 
 import React from "react";
-import { fallDown as Menu } from "react-burger-menu";
+import { bubble as Menu } from "react-burger-menu";
 
 export default props => {
   return (
-    <Menu {...props}>
+    <Menu width="22%">
       <a className="menu-item" href="/status" onClick={console.log("yo")}>
         Status
       </a>

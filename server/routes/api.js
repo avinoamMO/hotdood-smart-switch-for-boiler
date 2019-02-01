@@ -27,4 +27,14 @@ router.get("/sanity", function (req, res)
             res.send(mockTurnOnResponse);
     });
 
+    router.get("/mockstatus", function (req, res) 
+    {
+        const mockStatusResponse = 
+        {
+            "ison": false,
+            "has_timer": false
+        }
+            res.send(mockStatusResponse);
+    });
+
 module.exports = router
