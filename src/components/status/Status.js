@@ -9,9 +9,9 @@ export default class Status extends Component {
         console.log(switchStatus)
     
     return(
-    <div id = "toggleButton">
+    <div className = "statusPage">
     <OnOffToggleButton 
-    label ="On/Off" 
+    label ="" 
     switchStatus= {false}
     value="is_on" 
     turnSwitchOn={this.props.turnSwitchOn}

@@ -20,9 +20,8 @@ export function getSwitchStatus() {
 }
 
 export function turnSwitchOn() {
-  console.log("switchmethodsl13");
-  const deviceIP = "192.168.43.170";
-  axios.get(`http://${deviceIP}/relay/0?turn=on`).then(res => {
+  
+  axios.get(`http://192.168.43.170/relay/0?turn=on`).then(res => {
 
   if(res.data.ison!==true){
       setTimeout(turnSwitchOn,1500)

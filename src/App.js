@@ -10,7 +10,6 @@ import Analytics from './components/analytics/Analytics'
 import Schedule from './components/schedule/Schedule'
 import Settings from './components/settings/Settings'
 import Home from './components/home'
-import axios from 'axios';
 
 export default class App extends Component {
 
@@ -27,7 +26,6 @@ export default class App extends Component {
       <Router>
       <div>
       <SideBar pageWrapId={"page-wrap"} outerContainerId={"App"} />
-      {/* <Route path="/status" exact component={Status}/> */}
       <Route path="/status" exact render={() => <Status 
                                                       getSwitchStatus={getSwitchStatus}
                                                       turnSwitchOff={turnSwitchOff}

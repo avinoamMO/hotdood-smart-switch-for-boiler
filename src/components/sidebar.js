@@ -21,7 +21,7 @@ export default props => {
       <a className="menu-item" href="/Settings">
         Settings
       </a>
-
+      <div id="logoutButton"><i>Logout</i></div>
     </Menu>
   );
 };

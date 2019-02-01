@@ -21,8 +21,7 @@ export default class OnOffToggleButton extends Component {
     
     
     return(
-    <div>
-    {<form>
+<div id = "toggleButton">    {<form>
       {this.props.label}
       <input className="ch" type="checkbox" name="temperature" value={this.props.value} onClick={this.handleButtonClick.bind(this)}/>
     </form>}
