@@ -4,9 +4,19 @@ import axios from 'axios';
 export default class OnOffToggleButton extends Component {
   
 
-    handleButtonClick(){
-        
+    async handleButtonClick(){
+       
+        this.props.turnSwitchOff();
+
+    if(this.props.switchStatus===true){
+        this.props.turnSwitchOff();
     }
+    if(this.props.switchStatus===false){
+    this.props.turnSwitchOn();
+   }
+
+    }
+
   render() {    
     
     
@@ -14,7 +24,7 @@ export default class OnOffToggleButton extends Component {
     <div>
     {<form>
       {this.props.label}
-      <input className="ch" type="checkbox" name="temperature" value={this.props.value} onClick={this.props.turnSwitchOn}/>
+      <input className="ch" type="checkbox" name="temperature" value={this.props.value} onClick={this.handleButtonClick.bind(this)}/>
     </form>}
     </div>)
       }
