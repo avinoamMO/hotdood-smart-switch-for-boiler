@@ -36,22 +36,18 @@ export default class App extends Component {
     turnSwitchOn =()=> {
       console.log("sending turn on request")  
         axios.get(`http://localhost:3007/turnOn`).then(res => {
-          console.log("l39")  
         this.getSwitchStatus();
         if(res.data.ison===false){
-          console.log(res.data)
-            // setTimeout(turnSwitchOn,1500)
+            setTimeout(this.turnSwitchOn,1500)
         }
         })}
       
         turnSwitchOff= ()=> {
           console.log("sending turn off request")
           axios.get(`http://localhost:3007/turnOff`).then(res => {
-          console.log("l49")  
           this.getSwitchStatus();
           if(res.data.ison===true){
-              console.log(res.data)
-                // setTimeout(turnSwitchOff,1500)
+                setTimeout(this.turnSwitchOff,1500)
             }
           })}
         
