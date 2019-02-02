@@ -3,32 +3,58 @@ import { Link, BrowserRouter as Router, Route} from 'react-router-dom'
 import './css/App.css';
 import './css/styles.css';
 
-import {turnSwitchOff, turnSwitchOn, getSwitchStatus} from './SwitchMethods'
+// import {turnSwitchOff, turnSwitchOn, getSwitchStatus} from './SwitchMethods'
 import SideBar from "./components/sidebar";
 import Status from './components/status/Status'
 import Analytics from './components/analytics/Analytics'
 import Schedule from './components/schedule/Schedule'
 import Settings from './components/settings/Settings'
 import Home from './components/home'
+import Login from './components/Login'
+import axios from "axios";
 
 export default class App extends Component {
   constructor(){
-super()
-      // this.handleSideBarClick = this.handleSideBarClick.bind(this);
-      this.state = {currentPage : null}
-
+  super()
+     
+      this.state = {switchStatus : null, dataLoaded: false}
     }
-  
-    handleSideBarClick =(pageId)=>{
-    
-      if(pageId!==null){
-        // const a = e.target// const selected = e.target.split('/').pop();
-      console.log(pageId) 
-      // this.setState({currentPage : pageId})
-      return <Link to='something'></Link>
+     
+    componentDidMount(){
+      this.getSwitchStatus();  
+    }
 
-       }
-      }
+    getSwitchStatus(){
+      axios.get(`http://localhost:3007/status`).then(res => {
+        this.setState({dataLoaded:true,switchStatus:res.data})
+        console.log(`this.state.switchStatus = ${this.state.switchStatus}`)
+      }).catch(function(error){
+        console.log(error);
+      })
+    }
+    
+    turnSwitchOn =()=> {
+      console.log("sending turn on request")  
+        axios.get(`http://localhost:3007/turnOn`).then(res => {
+          console.log("l39")  
+        this.getSwitchStatus();
+        if(res.data.ison===false){
+          console.log(res.data)
+            // setTimeout(turnSwitchOn,1500)
+        }
+        })}
+      
+        turnSwitchOff= ()=> {
+          console.log("sending turn off request")
+          axios.get(`http://localhost:3007/turnOff`).then(res => {
+          console.log("l49")  
+          this.getSwitchStatus();
+          if(res.data.ison===true){
+              console.log(res.data)
+                // setTimeout(turnSwitchOff,1500)
+            }
+          })}
+        
       
   render() {
   
@@ -36,15 +62,15 @@ super()
     return (
       <Router>
       <div>
-      <SideBar pageWrapId={"page-wrap"} outerContainerId={"App"} handleSideBarClick ={this.handleSideBarClick}/>
+      <SideBar pageWrapId={"page-wrap"} outerContainerId={"App"}/>
       <Route path="/status" exact render={() => <Status 
-                                                      getSwitchStatus={getSwitchStatus}
-                                                      turnSwitchOff={turnSwitchOff}
-                                                      turnSwitchOn={turnSwitchOn} />}/>
+                                                      switchStatus={this.state.switchStatus}
+                                                      turnSwitchOff={this.turnSwitchOff}
+                                                      turnSwitchOn={this.turnSwitchOn} />}/>
       <Route path="/analytics" exact component={Analytics}/>
       <Route path="/schedule" exact component={Schedule}/>
       <Route path="/settings" exact component={Settings}/>
-      <Route path="/" exact component={Home}/>
+      <Route path="/" exact component={Login}/>
 
 
       </div>

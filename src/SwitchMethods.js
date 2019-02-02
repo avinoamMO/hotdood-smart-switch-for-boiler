@@ -1,41 +1,39 @@
 import axios from "axios";
 
 // This file should only contain functions that are effective immediately. 
-// Scheduled operations are to be performed on server-side or, via built-in shelly features exclusively, here.
+// Scheduled operations are to be performed on server-side or shelly1-side.
 
-
-export function getSwitchStatus() {
-  axios.get(`http://192.168.43.170/relay/0?status`).then(res => {
-    if(res.data.ison===true){
-        return true
-    }
-    if(res.data.ison===false){
-        return false
-    }
-    if(res.data!==true && res.data!==false){
-        return "NA"
-    }
-  });
+// export function getSwitchStatus() {
+//   axios.get(`http://localhost:3007/status`).then(res => {
+//         this.setState({dataLoaded:true,switchStatus:res.data})
+//         console.log(`this.state.switchStatus = ${this.state.switchStatus}`)
+//       }).catch(function(error){
+//         console.log(error);
+//       })
   
-}
+// }
 
 export function turnSwitchOn() {
-  
-  axios.get(`http://192.168.43.170/relay/0?turn=on`).then(res => {
-
-  if(res.data.ison!==true){
-      setTimeout(turnSwitchOn,1500)
+console.log("sending turn on request")  
+  axios.get(`http://localhost:3007/turnOn`).then(res => {
+  if(res.data.ison===false){
+    console.log(res.data)
+      // setTimeout(turnSwitchOn,1500)
   }
+  }).catch(function(error){
+    console.log(error);
   });
+
 }
 
 export function turnSwitchOff() {
-  console.log("switchmethodsl23");
-  const deviceIP = "192.168.43.170";
-
-  axios.get(`http://${deviceIP}/relay/0?turn=off`).then(res => {
-    if(res.data.ison!==false){
-        setTimeout(turnSwitchOff,1500)
+  console.log("sending turn off request")
+  axios.get(`http://localhost:3007/turnOff`).then(res => {
+  if(res.data.ison===true){
+      console.log(res.data)
+        // setTimeout(turnSwitchOff,1500)
     }
+  }).catch(function(error){
+    console.log(error);
   });
 }

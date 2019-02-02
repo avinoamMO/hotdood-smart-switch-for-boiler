@@ -5,15 +5,11 @@ export default class Status extends Component {
   
   
   render() {    
-     let switchStatus =  this.props.getSwitchStatus()
-        console.log(switchStatus)
-    
     return(
     <div className = "statusPage">
     <OnOffToggleButton 
     label ="" 
-    switchStatus= {false}
-    value="is_on" 
+    switchStatus= {this.props.switchStatus} 
     turnSwitchOn={this.props.turnSwitchOn}
     turnSwitchOff={this.props.turnSwitchOff}/>
     </div>)

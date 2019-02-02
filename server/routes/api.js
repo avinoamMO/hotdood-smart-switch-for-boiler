@@ -6,35 +6,66 @@ router.get("/sanity", function (req, res)
     {
         res.send("OK")
     });
+    
 
-    router.get("/mockTurnOff", function (req, res) 
+
+    
+    router.get("/turnOff", function (req, res) 
     {
-        const mockTurnOffResponse = 
-            {
-                "ison": false,
-                "has_timer": false
+        const options = {  
+            url: 'http://192.168.43.170/relay/0?turn=off',
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Accept-Charset': 'utf-8'
             }
-            res.send(mockTurnOffResponse);
+        };
+        
+        request(options, function(err, res, body) {  
+            let json = JSON.parse(body);
+            console.log(json);
+        });   
+
+
+            res.send("something");
     });
 
-    router.get("/mockTurnOn", function (req, res) 
+    router.get("/turnOn", function (req, res) 
     {
-        const mockTurnOnResponse = 
-            {
-                "ison": true,
-                "has_timer": false
+        const options = {  
+            url: 'http://192.168.43.170/relay/0?turn=on',
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Accept-Charset': 'utf-8'
             }
-            res.send(mockTurnOnResponse);
+        };
+        
+        request(options, function(err, res, body) {  
+            let json = JSON.parse(body);
+            console.log(json);
+        });   
+
+
+            res.send("something2");
     });
 
-    router.get("/mockstatus", function (req, res) 
+    router.get("/status", function (req, response) 
     {
-        const mockStatusResponse = 
-        {
-            "ison": false,
-            "has_timer": false
-        }
-            res.send(mockStatusResponse);
+        const options = {  
+            url: 'http://192.168.43.170/relay/0?status',
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Accept-Charset': 'utf-8'
+            }
+        };
+        
+        request(options, function(err, res, body) {  
+            let json = JSON.parse(body);
+            console.log(json);
+            response.send(json.ison)
+        });   
     });
 
 module.exports = router
