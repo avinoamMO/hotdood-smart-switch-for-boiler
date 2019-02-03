@@ -2,13 +2,40 @@ const express = require("express")
 const request = require('request');
 const router = express.Router()
 
+let User = require("../models/User")
+let Schedule = require("../models/Schedule")
+let OperationRecord = require("../models/OperationRecord")
+
+
 router.get("/sanity", function (req, res) 
     {
         res.send("OK")
     });
     
 
+    router.get("/getUsers", function (req, res) 
+    {
+        User.find({}).exec(function(err,dataFromDb)
+            {
+                res.send(dataFromDb)
+            })    
+    });
 
+    router.get("/getSchedules", function (req, res) 
+    {
+        Schedule.find({}).exec(function(err,dataFromDb)
+            {
+                res.send(dataFromDb)
+            })    
+    });
+
+    router.get("/getoperationrecords", function (req, res) 
+    {
+        OperationRecord.find({}).exec(function(err,dataFromDb)
+            {
+                res.send(dataFromDb)
+            })    
+    });
     
     router.get("/turnOff", function (req, res) 
     {

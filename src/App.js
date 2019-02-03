@@ -19,14 +19,42 @@ export default class App extends Component {
   constructor(){
   super()
      
-      this.state = {switchStatus : null, dataLoaded: false}
+      this.state = {switchStatus : null, dataLoaded: false,
+                    users: null, schedules: null, operationrecords:null}
     }
      
     componentDidMount(){
-      this.getSwitchStatus();  
+      this.getSwitchStatus();
     }
 
-    getSwitchStatus(){
+    getUsers = () =>{
+      axios.get(`http://localhost:3007/getUsers`).then(res => {
+        this.setState({users:res.data})
+        console.log(`this.state.users = ${this.state.users}`)
+      }).catch(function(error){
+        console.log(error);
+      })
+    }
+    
+    getSchedules = () =>{
+      axios.get(`http://localhost:3007/getSchedules`).then(res => {
+        this.setState({schedules:res.data})
+        console.log(`this.state.schedules = ${this.state.schedules}`)
+      }).catch(function(error){
+        console.log(error);
+      })
+    }
+    getOperationRecords = () =>{
+      axios.get(`http://localhost:3007/getOperationRecords`).then(res => {
+        this.setState({operationrecords:res.data})
+        console.log(`this.state.operationrecords = ${this.state.operationrecords}`)
+      }).catch(function(error){
+        console.log(error);
+      })
+    }
+
+
+    getSwitchStatus = () =>{
       axios.get(`http://localhost:3007/status`).then(res => {
         this.setState({dataLoaded:true,switchStatus:res.data})
         console.log(`this.state.switchStatus = ${this.state.switchStatus}`)
@@ -65,11 +93,22 @@ export default class App extends Component {
                                                       switchStatus={this.state.switchStatus}
                                                       turnSwitchOff={this.turnSwitchOff}
                                                       turnSwitchOn={this.turnSwitchOn} />}/>
-      <Route path="/analytics" exact component={Analytics}/>
-      <Route path="/schedule" exact component={Schedule}/>
+      <Route path="/analytics" exact render={() => <Analytics 
+                                                      getOperationRecords={this.getOperationRecords} 
+                                                      operationRecords={this.state.operationrecords}/>}/>
+      
+      <Route path="/schedule" exact render={() => <Schedule
+                                                      getSchedules={this.getSchedules}
+                                                      schedules = {this.state.schedules} />}/>
+      
+      <Route path="/settings/manageUsers" exact render={() => <ManageUsers
+                                                      getUsers={this.getUsers}
+                                                      users = {this.state.users}/>}/>
+
+
       <Route path="/settings" exact component={Settings}/>
-      <Route path="/settings/manageUsers" exact component={ManageUsers}/>
-      <Route path="/settings/manageDevice" exact component={ManageDevice}/>
+      
+      <Route path="/settings/manageDevice" exact component={ManageDevice}/> 
       <Route path="/" exact component={Login}/>
 
 

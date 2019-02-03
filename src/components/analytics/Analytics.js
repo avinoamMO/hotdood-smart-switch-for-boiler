@@ -2,9 +2,15 @@ import React, { Component } from 'react';
 import UsersDeviceUsageTimeBarChart from './UsersDeviceUsageTimeBarChart'
 import YearlyUsageTrendLineChart from './YearlyUsageTrendLineChart'
 export default class Analytics extends Component {
+  componentDidMount(){
+    
+    this.props.getOperationRecords();
+  }
+
   render() {
 
-    const deviceUsageByUsers = [
+    
+    const deviceUsageByUsers = [ // need to built the api route in server to produce this format of data.
       {
         "AnswerRef": "one",
         "Text": "Lidor",

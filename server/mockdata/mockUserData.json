@@ -1,0 +1,44 @@
+[
+    {
+        "_uid": "0001",
+        "name": "Morgan Freeman",
+        "phoneNum" : "972-50-8559440",
+        "photoUrl" : "./god.png",
+        "userCreated" : "2019-11-23T22:13:20.000Z",
+        "isOwner" : true,
+        "isAdmin" : true,
+        "kidMode ": false
+    },
+
+    {
+        "_uid": "0002",
+        "name": "Lidor Levi",
+        "phoneNum" : "972-50-8559440",
+        "photoUrl" : "./lidor.png",
+        "userCreated" : "2019-11-23T22:13:20.000Z",
+        "isOwner" : false,
+        "isAdmin" : true,
+        "kidMode ": false
+      },
+
+      {
+        "_uid": "0003",
+        "name": "Neta Azulai",
+        "phoneNum" : "972-50-8559440",
+        "photoUrl" : "./neta.png",
+        "userCreated" : "2019-11-23T22:13:20.000Z",
+        "isOwner" : false,
+        "isAdmin" : true,
+        "kidMode ": false
+      },
+      {
+        "_uid": "0004",
+        "name": "Dennis DeMenace",
+        "phoneNum" : "972-50-8559440",
+        "photoUrl" : "./dennis.png",
+        "userCreated" : "2019-11-23T22:13:20.000Z",
+        "isOwner" : false,
+        "isAdmin" : false,
+        "kidMode ": true
+      }
+]
