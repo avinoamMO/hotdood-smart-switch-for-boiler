@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import ManageUsers from './ManageUsers'
+import {Link} from 'react-router-dom'
+
 
 export default class Settings extends Component {
   tellajoke = () =>
@@ -12,10 +14,14 @@ export default class Settings extends Component {
   }
   render() {
     return (
-<div className="SettingsPage">
-      <button>Manage users</button> <p/>
+    <div className="SettingsPage">
+
+      {/* <button>Manage users</button> <p/> */}
       <button>Configure Device</button> <p/>
       <button onClick={this.tellajoke}>Make a grilled cheese sandwich</button>
+      <Link to='/settings/manageUsers'>Manage Users</Link>
+      <Link to='/settings/manageDevice'>Manage Device</Link>
+
 
       </div>
     );

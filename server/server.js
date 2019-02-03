@@ -1,13 +1,13 @@
 // Include packages:
 const express = require('express')
 const bodyParser = require('body-parser')
-// const mongoose = require('mongoose')
+const mongoose = require('mongoose')
 const path = require('path');
 const PORT = 3007
 
 // db setup:
 
-// mongoose.connect('mongodb://localhost/iCRM')
+mongoose.connect('mongodb://localhost/hotDood')
 // const Schema = mongoose.Schema
 
 //Server setup;

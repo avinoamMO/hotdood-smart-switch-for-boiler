@@ -12,6 +12,8 @@ import Settings from './components/settings/Settings'
 import Home from './components/home'
 import Login from './components/Login'
 import axios from "axios";
+import ManageUsers from './components/settings/ManageUsers'
+import ManageDevice from './components/settings/ManageDevice'
 
 export default class App extends Component {
   constructor(){
@@ -66,6 +68,8 @@ export default class App extends Component {
       <Route path="/analytics" exact component={Analytics}/>
       <Route path="/schedule" exact component={Schedule}/>
       <Route path="/settings" exact component={Settings}/>
+      <Route path="/settings/manageUsers" exact component={ManageUsers}/>
+      <Route path="/settings/manageDevice" exact component={ManageDevice}/>
       <Route path="/" exact component={Login}/>
 
 

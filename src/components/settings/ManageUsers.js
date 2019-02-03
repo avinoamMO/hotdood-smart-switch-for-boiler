@@ -4,8 +4,9 @@ export default class ManageUsers extends Component {
   render() {
       // Make this a popup menu.
     return (
-      <div className="ListofUsers">
-      List of users.
+      <div className="ManageUsersPage">
+      User photo, Remove User, Make Admin, Limit usage/Kid mode
+      <p/>Add a new user
       </div>
     );
   }

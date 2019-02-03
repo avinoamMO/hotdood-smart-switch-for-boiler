@@ -20,17 +20,22 @@ export default class OnOffToggleButton extends Component {
   render() {    
     
     console.log(this.props.switchStatus)
-    return(
-    <div id = "toggleButton">    {<form>
-       
-      <input className="ch" 
-      type="checkbox" 
-      name="temperature" 
-      checked ={this.props.switchStatus}
-      value={true} 
-      onClick={this.handleButtonClick.bind(this)}/>
-    </form>}
-    </div>)
+    if(this.props.switchStatus!==null){
+        return(
+            <div id = "toggleButton">    {<form>
+               
+              <input className="ch" 
+              type="checkbox" 
+              name="temperature" 
+              checked ={this.props.switchStatus}
+              value={true} 
+              onClick={this.handleButtonClick.bind(this)}/>
+            </form>}
+            </div>)
+    }
+    else{
+        return(<div>lost connection to device</div>)
+    }
       }
       }
       

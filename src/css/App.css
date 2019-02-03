@@ -55,6 +55,19 @@ margin-left: 15%;
   margin-top: 45%;
   margin-left: 10%;
 }
+.ManageUsersPage{
+  position: absolute;
+  margin-top: 50%;
+  margin-left: 20%;
+}
+
+.ManageDevicePage{
+  position: absolute;
+  margin-top: 50%;
+  margin-left: 20%;
+}
+
+
 
 #logoutButton{
   margin-top: 550%;
