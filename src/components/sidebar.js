@@ -11,7 +11,7 @@ export default props => {
     <Menu width="22%" >
       
       <Link to='/status'>Status</Link>
-      <Link to='/schedule'>Schedule</Link>
+      <Link to='/schedules'>Schedules</Link>
       <Link to='/analytics'>Analytics</Link>
       <Link to='/settings'>Settings</Link>
       <Link id= 'logoutButton' to='/'>Logout</Link>

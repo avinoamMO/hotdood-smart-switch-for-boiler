@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 import { Link, BrowserRouter as Router, Route} from 'react-router-dom'
 import './css/App.css';
 import './css/styles.css';
+// import {turnSwitchOff, turnSwitchOn, getSwitchStatus, getUsers, getSchedules, getOperationRecords} from './SwitchMethods';
 
-// import {turnSwitchOff, turnSwitchOn, getSwitchStatus} from './SwitchMethods'
 import SideBar from "./components/sidebar";
 import Status from './components/status/Status'
 import Analytics from './components/analytics/Analytics'
-import Schedule from './components/schedule/Schedule'
+import Schedules from './components/schedules/Schedules'
 import Settings from './components/settings/Settings'
 import Home from './components/home'
 import Login from './components/Login'
@@ -24,63 +24,95 @@ export default class App extends Component {
     }
      
     componentDidMount(){
-      this.getSwitchStatus();
-    }
-
-    getUsers = () =>{
-      axios.get(`http://localhost:3007/getUsers`).then(res => {
-        this.setState({users:res.data})
-        console.log(`this.state.users = ${this.state.users}`)
-      }).catch(function(error){
-        console.log(error);
-      })
-    }
-    
-    getSchedules = () =>{
-      axios.get(`http://localhost:3007/getSchedules`).then(res => {
-        this.setState({schedules:res.data})
-        console.log(`this.state.schedules = ${this.state.schedules}`)
-      }).catch(function(error){
-        console.log(error);
-      })
-    }
-    getOperationRecords = () =>{
-      axios.get(`http://localhost:3007/getOperationRecords`).then(res => {
-        this.setState({operationrecords:res.data})
-        console.log(`this.state.operationrecords = ${this.state.operationrecords}`)
-      }).catch(function(error){
-        console.log(error);
-      })
-    }
-
-
-    getSwitchStatus = () =>{
-      axios.get(`http://localhost:3007/status`).then(res => {
-        this.setState({dataLoaded:true,switchStatus:res.data})
-        console.log(`this.state.switchStatus = ${this.state.switchStatus}`)
-      }).catch(function(error){
-        console.log(error);
-      })
-    }
-    
-    turnSwitchOn =()=> {
-      console.log("sending turn on request")  
-        axios.get(`http://localhost:3007/turnOn`).then(res => {
-        this.getSwitchStatus();
-        if(res.data.ison===false){
-            setTimeout(this.turnSwitchOn,1500)
-        }
-        })}
+       this.getSwitchStatus();
       
-        turnSwitchOff= ()=> {
-          console.log("sending turn off request")
-          axios.get(`http://localhost:3007/turnOff`).then(res => {
-          this.getSwitchStatus();
-          if(res.data.ison===true){
-                setTimeout(this.turnSwitchOff,1500)
+    }
+
+    getUsers = () => {
+      axios
+        .get(`http://localhost:3007/getUsers`)
+        .then(res => {
+          this.setState({ users: res.data });
+          console.log(`this.state.users = ${this.state.users}`);
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    };
+    
+     getSchedules = () => {
+      axios
+        .get(`http://localhost:3007/getSchedules`)
+        .then(res => {
+          console.log(res.data);
+          this.setState({
+            schedules: res.data.schedule_rules,
+            isScheduleOn: res.data.schedule
+          });
+          console.log(`this.state.schedules = ${this.state.schedules}`);
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    };
+     getOperationRecords = () => {
+      axios
+        .get(`http://localhost:3007/getOperationRecords`)
+        .then(res => {
+          this.setState({ operationrecords: res.data });
+          console.log(
+            `this.state.operationrecords = ${this.state.operationrecords}`
+          );
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    };
+    
+     getSwitchStatus = () => {
+      axios
+        .get(`http://localhost:3007/status`)
+        .then(res => {
+          this.setState({ dataLoaded: true, switchStatus: res.data });
+          console.log(`this.state.switchStatus = ${this.state.switchStatus}`);
+        })
+        .catch(function(error) {
+          console.log(error);
+          return error;
+        });
+    };
+    
+     turnSwitchOn = () => {
+          axios.get(`http://localhost:3007/turnOn`).then(res => {
+            this.getSwitchStatus();
+            if (res.data.ison === false) {
+              setTimeout(this.turnSwitchOn, 1500);
             }
-          })}
-        
+          });
+        }
+
+        turnSwitchOnWithInterval = (intervalValueInSeconds) => {
+          let interval = parseInt(intervalValueInSeconds);
+          interval = interval*60;
+          console.log(`interval = ${intervalValueInSeconds}m = ${interval}s`)
+          axios.get(`http://localhost:3007/turnOnWithInterval/interval=${interval}`).then(res => {
+            this.getSwitchStatus();
+            if (res.data.ison === false) {
+              setTimeout(this.turnSwitchOn, 1500);
+            }
+          });
+        }
+    
+     turnSwitchOff = () => {
+      console.log("sending turn off request");
+      axios.get(`http://localhost:3007/turnOff`).then(res => {
+        this.getSwitchStatus();
+        if (res.data.ison === true) {
+          setTimeout(this.turnSwitchOff, 1500);
+        }
+      });
+    };
+    
       
   render() {
   
@@ -92,14 +124,16 @@ export default class App extends Component {
       <Route path="/status" exact render={() => <Status 
                                                       switchStatus={this.state.switchStatus}
                                                       turnSwitchOff={this.turnSwitchOff}
-                                                      turnSwitchOn={this.turnSwitchOn} />}/>
+                                                      turnSwitchOn={this.turnSwitchOn} 
+                                                      turnSwitchOnWithInterval ={this.turnSwitchOnWithInterval}/>}/>
       <Route path="/analytics" exact render={() => <Analytics 
                                                       getOperationRecords={this.getOperationRecords} 
                                                       operationRecords={this.state.operationrecords}/>}/>
       
-      <Route path="/schedule" exact render={() => <Schedule
+      <Route path="/schedules" exact render={() => <Schedules
                                                       getSchedules={this.getSchedules}
-                                                      schedules = {this.state.schedules} />}/>
+                                                      schedules = {this.state.schedules}
+                                                      isScheduleOn = {this.state.isScheduleOn} />}/>
       
       <Route path="/settings/manageUsers" exact render={() => <ManageUsers
                                                       getUsers={this.getUsers}

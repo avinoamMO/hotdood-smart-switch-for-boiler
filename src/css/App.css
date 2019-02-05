@@ -67,6 +67,11 @@ margin-left: 15%;
   margin-left: 20%;
 }
 
+.SchedulesPage{
+  position: absolute;
+  margin-top: 50%;
+  margin-left: 20%;
+}
 
 
 #logoutButton{
@@ -74,3 +79,8 @@ margin-left: 15%;
   margin-left: -10%;
 }
 
+#dialDigit{
+position: absolute;
+margin-top: -55%;
+margin-left: 37%;
+}

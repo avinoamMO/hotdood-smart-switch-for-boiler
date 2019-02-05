@@ -3,7 +3,7 @@ import axios from 'axios';
 
 export default class OnOffToggleButton extends Component {
   
-
+        
      handleButtonClick(){
        
     if(this.props.switchStatus===true){
@@ -18,7 +18,8 @@ export default class OnOffToggleButton extends Component {
     }
 
   render() {    
-    
+  
+    console.log(this.props)
     console.log(this.props.switchStatus)
     if(this.props.switchStatus!==null){
         return(
