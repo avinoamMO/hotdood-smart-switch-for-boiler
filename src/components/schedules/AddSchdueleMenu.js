@@ -6,7 +6,8 @@ export default class AddSchdueleMenu extends Component{
     constructor (){
         super()
         this.state = {
-                            time:     "yo",
+                            timeOn:     "00:00",
+                            timeOff: "00:00", 
                             duration : "0",
                             sunday : false,
                             monday : false,
@@ -28,8 +29,8 @@ export default class AddSchdueleMenu extends Component{
     }
     sendNewSchedule = () =>{
     this.props.saveSchedule({
-                            time: this.state.time,
-                            duration : this.state.duration,
+                            timeOn: this.state.timeOn,
+                            timeOff: this.state.timeOff,
                             sunday : this.state.sunday,
                             monday : this.state.monday,
                             tuesday : this.state.tuesday,
@@ -44,7 +45,7 @@ export default class AddSchdueleMenu extends Component{
         <div className="AddSchduelePopUpMenu">            
                 <div className="AddSchduelePopUpMenuContents">            
                 <p/>        
-                ON: <input type="Time" name="time" onChange={this.handleElementChange} /> for: <input type="Number" name="duration" min={1} max={999} onChange={this.handleElementChange} /> min
+                ON: <input type="Time" name="timeOn" onChange={this.handleElementChange} /> OFF: <input type="Time" name="timeOff" onChange={this.handleElementChange} />
         
                 <p/>
                 Every:

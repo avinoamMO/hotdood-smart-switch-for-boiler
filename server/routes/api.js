@@ -17,6 +17,9 @@ http://192.168.43.170/settings/relay/0?schedule_rules
 API for settings the schedules:
 http://192.168.43.170/settings/relay/0?schedule_rules=1102-0-on
 
+API for settings multiple schedules:
+http://192.168.43.170/settings/relay/0?schedule_rules=1115-0-on,1145-0-off,1115-2-on,1117-3-on,1122-2-off,1145-2-on
+
 API works like this: ?schedule_rules=<hhmm(ex. 1106)_day(represented by 1 digit between 0-6 where 0 is monday and 6 is sunday)_on/off(Leave one)
 */
 router.get("/sanity", function (req, res) 
@@ -24,6 +27,30 @@ router.get("/sanity", function (req, res)
         res.send("OK")
     });
     
+    router.get("/saveNewSchedule/:sch", function (req, res) 
+    {
+        /* 
+                Some pseudo code:
+
+                1. turn the object from the client to a string in the format 
+                   that shelly knows:
+                   let newSch = changeEventToShellyFormat(obj);
+
+                2. fetch the existing schedule that shelly has right now
+                   let currentSchedule = scheduleFromShellyToCsv();
+
+                3. add the new schduele to the existing schduele
+                   let newSchedule = addScheduleToOtherSchedules(newEvents,currentSchedule);
+
+                4. send an order to shelly to update her schdueles
+                   shellySetNewSchedule(newSchedule);
+
+        */
+        let a = JSON.parse(req.params.sch);
+        console.log(a)
+    
+        res.send(req.params.sch)
+    });
 
     router.get("/getUsers", function (req, res) 
     {

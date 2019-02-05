@@ -10,6 +10,10 @@ const PORT = 3007
 mongoose.connect('mongodb://localhost/hotDood')
 // const Schema = mongoose.Schema
 
+// Shelly scheduling: 
+
+
+
 //Server setup;
 const app = express();
 const api = require("./routes/api")

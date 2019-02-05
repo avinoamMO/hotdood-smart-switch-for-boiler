@@ -58,7 +58,17 @@ export default class App extends Component {
 
     setNewSchedule = (sch) =>{
       console.log("appjsl60")
-      console.log(sch)
+      let data = JSON.stringify(sch)
+      axios
+        .get(`http://localhost:3007/saveNewSchedule/${data}`)
+        .then(res => {
+          // this.setState({ operationrecords: res.data });
+          console.log(res.data)
+          
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
     }
      getOperationRecords = () => {
       axios
