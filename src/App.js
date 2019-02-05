@@ -55,6 +55,11 @@ export default class App extends Component {
           console.log(error);
         });
     };
+
+    setNewSchedule = (sch) =>{
+      console.log("appjsl60")
+      console.log(sch)
+    }
      getOperationRecords = () => {
       axios
         .get(`http://localhost:3007/getOperationRecords`)
@@ -132,6 +137,7 @@ export default class App extends Component {
       
       <Route path="/schedules" exact render={() => <Schedules
                                                       getSchedules={this.getSchedules}
+                                                      setNewSchedule={this.setNewSchedule}
                                                       schedules = {this.state.schedules}
                                                       isScheduleOn = {this.state.isScheduleOn} />}/>
       
