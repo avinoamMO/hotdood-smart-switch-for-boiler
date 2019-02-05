@@ -6,7 +6,8 @@ export default class Schedule extends Component {
       console.log(this.props)
     return (
     <div className="Schedule">
-      {this.props.data.timeOn}
+      #{this.props.ind} schedule set to  {this.props.data} <button>X</button>
+      
       </div>
     );
   }
