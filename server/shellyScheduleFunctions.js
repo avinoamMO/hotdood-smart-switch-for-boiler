@@ -1,5 +1,7 @@
+const request = require('request');
 
-changeEventToShellyFormat = (event) =>{
+
+const changeEventToShellyFormat = (event) =>{
 /*
 Input: 
 event = 
@@ -18,6 +20,7 @@ event =
 Output:
 string = "1115-0-on,1145-0-off,1115-2-on,1117-3-on,1122-2-off,1145-2-on"
 */
+
 let string = ""
 let arr = []
 event.monday===true? arr.push("0") : null
@@ -28,22 +31,23 @@ event.friday===true? arr.push("4") : null
 event.saturday===true? arr.push("5") : null
 event.sunday===true? arr.push("6") : null
 arr.forEach(c=>{
-                    string+=`${event.timeOn.split(":")[0]}${event.timeOn.split(":")[1]}-${c}-on,${event.timeOff.split(":")[0]}${event.timeOn.split(":")[1]}-${c}-off`
+                    string+=`${event.timeOn.split(":")[0]}${event.timeOn.split(":")[1]}-${c}-on,${event.timeOff.split(":")[0]}${event.timeOn.split(":")[1]}-${c}-off,`
                 })
-
-                // -0- is the number of day and not the relay number!!!!!!
+console.log(string)
 return string;
+
+// TODO: MAKE SURE THERE'S NO DANGLING COMMA!!!!! (unless shelly is forgiving for that.)
 
 }
 
-scheduleFromShellyToCsv = () =>{
+const scheduleFromShellyToCsv = () =>{
    /* 
    Input : none
 
    Output : 
    1115-0-on,1145-0-off,1115-2-on,1117-3-on,1122-2-off,1145-2-on
    */ 
-  let arrayFromShelly = []
+  
   let string = ""
   const options = {  
       url: 'http://192.168.43.170/settings/relay/0',
@@ -55,18 +59,25 @@ scheduleFromShellyToCsv = () =>{
   };
   
   request(options, function(err, res, body) {  
-      arrayFromShelly = JSON.parse(body.scheduleRules);
+    //   arrayFromShelly = JSON.parse(body.scheduleRules);
+    let lorem = JSON.parse(body)
+    let arrayFromShelly = lorem.schedule_rules
+    console.log(arrayFromShelly)
       arrayFromShelly.forEach(c=>
                                 {
-                                 string+=c.split("")[1]
-                                })
+                                 temp = c.split("'")
+                                    // string+=c.split("'")[1]
+                                    string+=temp[0]+=","
+                                }) // NOTE : there's a dangling comma issue.
+     
+     console.log(string);
      return string;
 
   });   
-
+console.log("endOfscheduleFromShellyToCsv")
 };
 
-addScheduleToOtherSchedules = (newEvents,currentSchedule) =>{
+const addScheduleToOtherSchedules = (newEvents,currentSchedule) =>{
 /*
     Input:
     (1) str1 = "1115-0-on,1145-0-off,1115-2-on,1117-3-on,1122-2-off,1145-2-on"
@@ -75,12 +86,12 @@ addScheduleToOtherSchedules = (newEvents,currentSchedule) =>{
     Output:
     "1115-0-on,1145-0-off,1115-2-on,1117-3-on,1122-2-off,1145-2-on, 1115-0-on,1145-0-off,1115-2-on,1117-3-on,1122-2-off,1145-2-on"
 */
-
+console.log(newEvents+=currentSchedule);
 return  newEvents+=currentSchedule;
 }
 
 
-shellySetNewSchedule(newSchedule) = () =>{
+const shellySetNewSchedule = (newSchedule) =>{
 
 
 /*
@@ -100,9 +111,33 @@ const options = {
 request(options, function(err, res, body) {  
     json = JSON.parse(body);
     console.log(json);
-    response.send(json);        
+    // response.send(json);        
 
 });   
 
 
 }
+
+/// TESTING : 
+
+// Stage 1: 
+// changeEventToShellyFormat(
+//     {timeOn: "11:15",
+//     timeOff: "11:45",
+//     monday: true,
+//     tuesday: false,
+//     wednsday: true,
+//     thursday: true,
+//     friday: false,
+//     saturday: false,
+//     sunday: false}); // DIS WORKS!
+
+// Stage 2:
+// scheduleFromShellyToCsv(); // DIS WORKS!
+
+//Stage 3:
+
+// addScheduleToOtherSchedules("str1","str2"); // DIS WORKS!
+
+// Stage 4:
+// shellySetNewSchedule("1115-02-on"); // DIS WORKS!!!@
