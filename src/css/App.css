@@ -104,5 +104,25 @@ margin-left: 37%;
   margin-top:10%;
   margin-left:5%;
 }
+#addScheduleButton{
+  margin-top:60%;
+  margin-left:22%;
+}
+#listOfCurrentSchedules{
+  margin-top:50%;
+  margin-left:-5%;
+}
+
+#event{
+  background-color:#bdc3c7;
+  margin-top:5%;
+  padding: 2%;
+  border-radius:8%;
+}
+#scheduleHeadline{
+  font-size: 150%;
+  margin-top:-30%;
+  margin-left:25%;
+}
 
 /* #dialController{} */

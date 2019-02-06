@@ -32,6 +32,7 @@ export default class Schedules extends Component {
     console.log(`@schedules.js: called for delete of an event in the schedule.`)
     console.log(`handling request to delete the event ${e}`)
     this.props.deleteAnEvent(e);
+    this.props.getSchedules();
     let tempState = this.state
   }
   render() {
@@ -41,11 +42,16 @@ export default class Schedules extends Component {
     }
 
     return (
+      <div>
+      
       <div className="SchedulesPage">
       {this.state.renderAddSchduele ? <AddSchdueleMenu closePopUp={this.handleClosePopUp} saveSchedule={this.handleSaveNewSchedule} /> : null}
-      List of active schedules:
+      <div id="scheduleHeadline">Schedules</div>
+      <div id="listOfCurrentSchedules">
       {this.props.schedules!=null? this.props.schedules.map((c,i)=>{return <Schedule ind={i} data={c} deleteSchedule={this.handleDeleteSchedule}/>}) : <div>loading...</div>}
-      <button onClick={this.handleCallPopUp}>Add a schedule.</button>
+      </div>
+      <div id="addScheduleButton"><button onClick={this.handleCallPopUp}>Add a schedule.</button></div>
+      </div>
       </div>
     );
   }

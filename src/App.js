@@ -73,7 +73,8 @@ export default class App extends Component {
       axios
         .get(`http://localhost:3007/deleteAnEvent/${data}`)
         .then(res => {
-          // this.setState({ operationrecords: res.data });
+          this.setState({ operationrecords: res.data });
+          this.getSchedules();
           
         })
         .catch(function(error) {

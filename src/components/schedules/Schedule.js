@@ -40,7 +40,7 @@ export default class Schedule extends Component {
       // 1-day
       // 2-action
     return (
-    <div className="Schedule">
+    <div id="event">
       Every {dayOfWeek} turn {actionType} at {timeOfDay}
       <button onClick={this.deleteSchedule}>X</button>
       
