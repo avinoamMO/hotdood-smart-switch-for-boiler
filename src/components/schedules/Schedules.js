@@ -40,7 +40,11 @@ export default class Schedules extends Component {
     if(this.props.schedules!==false){
       console.log(this.props.schedules) // this is an array of schedules
     }
-
+    if(this.props.schedules!=null){
+      if(this.props.schedules.length>0){
+        
+      }
+    }
     return (
       <div>
       
@@ -50,7 +54,7 @@ export default class Schedules extends Component {
       <div id="listOfCurrentSchedules">
       {this.props.schedules!=null? this.props.schedules.map((c,i)=>{return <Schedule ind={i} data={c} deleteSchedule={this.handleDeleteSchedule}/>}) : <div>loading...</div>}
       </div>
-      <div id="addScheduleButton"><button onClick={this.handleCallPopUp}>Add a schedule.</button></div>
+      <div id="addScheduleButton"><button onClick={this.handleCallPopUp}>Add a schedule</button></div>
       </div>
       </div>
     );

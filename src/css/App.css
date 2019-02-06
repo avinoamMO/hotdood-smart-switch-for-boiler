@@ -13,7 +13,16 @@ body{
   animation: App-logo-spin infinite 20s linear;
   height: 40vmin;
 }
-
+button{
+  background-color: #4CAF50; /* Green */
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+}
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
@@ -79,11 +88,11 @@ margin-left: 20%;
   margin-left: 20%;
 }
 .AddSchduelePopUpMenu{
-  background-color: white;
+  background-image: url("../assets/bgimg.jpg");
   position : absolute;
-  
-  width: 100%;
-  height: 400%;
+  margin-left: -5%;
+  width: 150%;
+  height: 210%;
 }
 
 li{

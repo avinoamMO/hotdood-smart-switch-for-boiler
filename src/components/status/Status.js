@@ -26,6 +26,7 @@ export default class Status extends Component {
         />
         </div>
         <div id="dialDigit"><b>{this.state.dialValue}</b>m</div>
+        <div id="toggleButtonDiv">
         <OnOffToggleButton
           label=""
           switchStatus={this.props.switchStatus}
@@ -35,6 +36,7 @@ export default class Status extends Component {
           dialValue = {this.state.dialValue}
           changeDialValue = {this.handleChangeDialValue}
         />
+        </div>
         <center>
           {/* <button>Turn on for 45 minutes</button><p/> */}
           {/* <button>Turn on for 1 hour</button> */}

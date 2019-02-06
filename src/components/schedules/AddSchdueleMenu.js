@@ -46,7 +46,9 @@ export default class AddSchdueleMenu extends Component{
         <div className="AddSchduelePopUpMenu">            
                 <div className="AddSchduelePopUpMenuContents">            
                 <p/>        
-                ON: <input type="Time" name="timeOn" onChange={this.handleElementChange} /> OFF: <input type="Time" name="timeOff" onChange={this.handleElementChange} />
+                ON:  <input type="Time"  name="timeOn" onChange={this.handleElementChange} /> 
+                <p/>
+                OFF: <input type="Time" name="timeOff" onChange={this.handleElementChange} />
         
                 <p/>
                 Every:
@@ -81,8 +83,9 @@ export default class AddSchdueleMenu extends Component{
                 </label><p/>
                 </div>
                 <p/>
+                <center>
                 <button onClick={this.sendNewSchedule}>Add</button><button onClick={this.props.closePopUp}>Cancel</button>
-                
+                </center>
         </div>)
     }
 }
