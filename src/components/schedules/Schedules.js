@@ -5,7 +5,7 @@ export default class Schedules extends Component {
   constructor(){
     super()
     this.state = ({renderAddSchduele : false})
- 
+  
   }
   componentDidMount(){
    
@@ -31,7 +31,8 @@ export default class Schedules extends Component {
   handleDeleteSchedule = (e) => {
     console.log(`@schedules.js: called for delete of an event in the schedule.`)
     console.log(`handling request to delete the event ${e}`)
-    this.props.deleteAnEvent(e); 
+    this.props.deleteAnEvent(e);
+    let tempState = this.state
   }
   render() {
     

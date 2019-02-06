@@ -1,7 +1,8 @@
 @import url('./toggleButton.css');
 
 body{
-  background-image: url("../assets/bgimg.jpg");  
+  background-image: url("../assets/bgimg.jpg");
+  
 }
 .App {
   text-align: center;

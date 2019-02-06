@@ -33,6 +33,7 @@ export default class Status extends Component {
           turnSwitchOff={this.props.turnSwitchOff}
           turnSwitchOnWithInterval={this.props.turnSwitchOnWithInterval}
           dialValue = {this.state.dialValue}
+          changeDialValue = {this.handleChangeDialValue}
         />
         <center>
           {/* <button>Turn on for 45 minutes</button><p/> */}
