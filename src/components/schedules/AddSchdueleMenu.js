@@ -39,6 +39,7 @@ export default class AddSchdueleMenu extends Component{
                             friday : this.state.friday,
                             saturday : this.state.saturday 
                         })
+    this.props.closePopUp();
     }
     render(){
         return(

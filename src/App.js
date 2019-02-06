@@ -61,7 +61,7 @@ export default class App extends Component {
         .then(res => {
           // this.setState({ operationrecords: res.data });
           console.log(res.data)
-          
+          this.getSchedules();
         })
         .catch(function(error) {
           console.log(error);
