@@ -21,14 +21,14 @@ export default class dialController extends Component{
          min={1}
          max={120}
          stepSize={1}
-         radius={100}
-         arcSize={180}
-         color='red'
+         radius={140}
+         arcSize={360}
+         color='black'
          onChange={value => this.props.changeDialValue(value)}
         //  onAfterChange={(value, props) => this.props.turnSwitchOnWithInterval(value, props)}
         //  onClick={this.props.turnSwitchOnWithInterval(value)}
-         sliced={false}
-         bgColor='blue'
+         sliced={true}
+         bgColor='gray'
 
         //  onAfterChange={value => this.props.turnSwitchOnWithInterval(value)}
         //  `hsl(${state.value}, 50%, 50%)`

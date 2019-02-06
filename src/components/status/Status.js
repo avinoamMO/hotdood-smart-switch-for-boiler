@@ -12,10 +12,23 @@ export default class Status extends Component {
 
     this.setState({dialValue:value})
   }
+  calculateMinsToString = ()=> {
+    let mins = this.state.dialValue;
+    if(mins<60){
+      return(`${mins}m`)
+    }
+    if(mins>=60){
+      return(`1hr${mins-60}m`)
+
+    }
+    if(mins>=120){
+      return(`2hr${mins-120}m`)
+    }
+  }
   render() {
     const value = this.state.something;
     console.log(this.props);
-
+    let timeString = this.calculateMinsToString();
     return (
       <div className="statusPage">
         <div id="dialController">
@@ -25,7 +38,7 @@ export default class Status extends Component {
           changeDialValue={this.handleChangeDialValue}
         />
         </div>
-        <div id="dialDigit"><b>{this.state.dialValue}</b>m</div>
+        <div id="dialDigit"><b>{timeString}</b></div>
         <div id="toggleButtonDiv">
         <OnOffToggleButton
           label=""
