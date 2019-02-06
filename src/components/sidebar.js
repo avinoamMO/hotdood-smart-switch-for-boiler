@@ -2,13 +2,13 @@
 import { Link, NavLink, BrowserRouter as Router, Route} from 'react-router-dom'
 
 import React from "react";
-import { bubble as Menu } from "react-burger-menu";
+import { fallDown as Menu } from "react-burger-menu";
 
 
 export default props => {
   return (
     
-    <Menu width="22%" >
+    <Menu width="55%" >
       
       <Link to='/status'>Status</Link>
       <Link to='/schedules'>Schedules</Link>

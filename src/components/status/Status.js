@@ -1,34 +1,42 @@
-import React, { Component } from 'react';
-import OnOffToggleButton from './OnOffToggleButton'
-import Roundy from 'roundy';
-import DialController from './DialController';
+import React, { Component } from "react";
+import OnOffToggleButton from "./OnOffToggleButton";
+import Roundy from "roundy";
+import DialController from "./DialController";
 
 export default class Status extends Component {
-  constructor(){
-    super()
-    this.state ={value:0}
+  constructor() {
+    super();
+    this.state = { dialValue: 0 };
   }
-  render() {    
-    const value = this.state.something
-    console.log(this.props)
-    return(
-    <div className = "statusPage">
-    <DialController turnSwitchOnWithInterval={this.props.turnSwitchOnWithInterval}/>
+  handleChangeDialValue = (value) =>{
 
-    <OnOffToggleButton 
-    label ="" 
-    switchStatus= {this.props.switchStatus} 
-    turnSwitchOn={this.props.turnSwitchOn}
-    turnSwitchOff={this.props.turnSwitchOff}/>
-    <center>
-    <button>Turn on for 45 minutes</button><p/>
-    <button>Turn on for 1 hour</button>
-    </center>
-    </div>)
-      }
-      }
-      
-      
+    this.setState({dialValue:value})
+  }
+  render() {
+    const value = this.state.something;
+    console.log(this.props);
 
-
-      
+    return (
+      <div className="statusPage">
+        <DialController
+          turnSwitchOnWithInterval={this.props.turnSwitchOnWithInterval}
+          dialValue = {this.state.dialValue}
+          changeDialValue={this.handleChangeDialValue}
+        />
+        <b>{this.state.dialValue}</b>
+        <OnOffToggleButton
+          label=""
+          switchStatus={this.props.switchStatus}
+          turnSwitchOn={this.props.turnSwitchOn}
+          turnSwitchOff={this.props.turnSwitchOff}
+          turnSwitchOnWithInterval={this.props.turnSwitchOnWithInterval}
+          dialValue = {this.state.dialValue}
+        />
+        <center>
+          {/* <button>Turn on for 45 minutes</button><p/> */}
+          {/* <button>Turn on for 1 hour</button> */}
+        </center>
+      </div>
+    );
+  }
+}

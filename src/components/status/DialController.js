@@ -17,15 +17,16 @@ export default class dialController extends Component{
         return(
             <div>
         <Roundy
-         value={this.state.value}
+         value={this.props.dialValue}
          min={1}
          max={120}
          stepSize={1}
          radius={100}
          arcSize={180}
          color='red'
-         onChange={value => this.setState({value})}
-         onAfterChange={value => this.props.turnSwitchOnWithInterval(this.state.value)}
+         onChange={value => this.props.changeDialValue(value)}
+        //  onAfterChange={(value, props) => this.props.turnSwitchOnWithInterval(value, props)}
+        //  onClick={this.props.turnSwitchOnWithInterval(value)}
          sliced={false}
          bgColor='blue'
 
@@ -34,7 +35,7 @@ export default class dialController extends Component{
         //  onAfterChange={(value, props) => ... }
         //  overrideStyle={ ... string template as CSS ...}
       /> 
-      <div className="dial" id="dialDigit" font-size="150"><b>{this.state.value}</b></div>
+      <div className="dial" id="dialDigit"><b>{this.state.value}</b></div>
             </div>
         )
     }

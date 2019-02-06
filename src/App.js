@@ -2,14 +2,11 @@ import React, { Component } from 'react';
 import { Link, BrowserRouter as Router, Route} from 'react-router-dom'
 import './css/App.css';
 import './css/styles.css';
-// import {turnSwitchOff, turnSwitchOn, getSwitchStatus, getUsers, getSchedules, getOperationRecords} from './SwitchMethods';
-
 import SideBar from "./components/sidebar";
 import Status from './components/status/Status'
 import Analytics from './components/analytics/Analytics'
 import Schedules from './components/schedules/Schedules'
 import Settings from './components/settings/Settings'
-import Home from './components/home'
 import Login from './components/Login'
 import axios from "axios";
 import ManageUsers from './components/settings/ManageUsers'
@@ -112,6 +109,8 @@ export default class App extends Component {
     };
     
      turnSwitchOn = () => {
+      console.log("sending turn off request");
+
           axios.get(`http://localhost:3007/turnOn`).then(res => {
             this.getSwitchStatus();
             if (res.data.ison === false) {
@@ -120,11 +119,12 @@ export default class App extends Component {
           });
         }
 
-        turnSwitchOnWithInterval = (intervalValueInSeconds) => {
+        turnSwitchOnWithInterval = (intervalValueInSeconds, props) => {
+          console.log(intervalValueInSeconds)
           let interval = parseInt(intervalValueInSeconds);
           interval = interval*60;
           console.log(`interval = ${intervalValueInSeconds}m = ${interval}s`)
-          axios.get(`http://localhost:3007/turnOnWithInterval/interval=${interval}`).then(res => {
+          axios.get(`http://localhost:3007/turnOnWithInterval/int erval=${interval}`).then(res => {
             this.getSwitchStatus();
             if (res.data.ison === false) {
               setTimeout(this.turnSwitchOn, 1500);
