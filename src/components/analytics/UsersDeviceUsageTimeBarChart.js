@@ -10,7 +10,7 @@ import { BarChart, CartesianGrid , XAxis, YAxis, Tooltip, Legend, Bar, Responsiv
 
 export default class UsersDeviceUsageTimeBarChart extends Component{
     render(){
-        
+            
         if(this.props.deviceUsageByUsers===null)
         {
             return(

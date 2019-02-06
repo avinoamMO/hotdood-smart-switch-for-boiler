@@ -18,12 +18,14 @@ export default class Status extends Component {
 
     return (
       <div className="statusPage">
+        <div id="dialController">
         <DialController
           turnSwitchOnWithInterval={this.props.turnSwitchOnWithInterval}
           dialValue = {this.state.dialValue}
           changeDialValue={this.handleChangeDialValue}
         />
-        <b>{this.state.dialValue}</b>
+        </div>
+        <div id="dialDigit"><b>{this.state.dialValue}</b>m</div>
         <OnOffToggleButton
           label=""
           switchStatus={this.props.switchStatus}

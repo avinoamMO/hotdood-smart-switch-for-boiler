@@ -53,7 +53,6 @@ export default class Analytics extends Component {
 
     return (
         <div className="AnalyticsPage">
-      I am the Analytics.
       <UsersDeviceUsageTimeBarChart deviceUsageByUsers={deviceUsageByUsers}/>  
       <YearlyUsageTrendLineChart yearlyUsageData={yearlyUsageData}/>
       </div>

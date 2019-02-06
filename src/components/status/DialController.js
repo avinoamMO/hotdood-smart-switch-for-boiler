@@ -35,7 +35,6 @@ export default class dialController extends Component{
         //  onAfterChange={(value, props) => ... }
         //  overrideStyle={ ... string template as CSS ...}
       /> 
-      <div className="dial" id="dialDigit"><b>{this.state.value}</b></div>
             </div>
         )
     }

@@ -1,7 +1,11 @@
 @import url('./toggleButton.css');
 
+body{
+  background-image: url("../assets/bgimg.jpg");  
+}
 .App {
   text-align: center;
+  
 }
 
 .App-logo {
@@ -38,9 +42,10 @@
   margin-top: 30%
 }
 .statusPage{
+
 position: absolute;
-margin-top: 60%;
-margin-left: 15%;
+margin-top: 45%;
+margin-left: 20%;
 }
 
 .SettingsPage{
@@ -98,3 +103,5 @@ margin-left: 37%;
   margin-top:10%;
   margin-left:5%;
 }
+
+/* #dialController{} */
