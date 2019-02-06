@@ -1,10 +1,16 @@
 const express = require("express")
 const request = require('request');
 const router = express.Router()
-
+const TalkToShelly = require("../shellyScheduleFunctions.js") // treats this as a function???
 let User = require("../models/User")
 let Schedule = require("../models/Schedule")
 let OperationRecord = require("../models/OperationRecord")
+
+const talkToShelly = new TalkToShelly();
+
+// talkToShelly.addScheduleToOtherSchedules("str1","str2");
+console.log(talkToShelly)
+// talkToShelly.addScheduleToOtherSchedules("str1","str2");
 
 /*
 API for getting status: 
@@ -27,7 +33,7 @@ router.get("/sanity", function (req, res)
         res.send("OK")
     });
     
-    router.get("/saveNewSchedule/:sch", function (req, res) 
+    router.get("/saveNewSchedule/:sch", async function (req, res) 
     {
         /* 
                 Some pseudo code:
@@ -46,10 +52,23 @@ router.get("/sanity", function (req, res)
                    shellySetNewSchedule(newSchedule);
 
         */
-        let a = JSON.parse(req.params.sch);
-        console.log(a)
-    
-        res.send(req.params.sch)
+
+        let eventObj = JSON.parse(req.params.sch); // get event from user
+        console.log(`eventObj: ${JSON.stringify(eventObj)}`)
+        let eventString = talkToShelly.changeEventToShellyFormat(eventObj);
+        console.log(`eventString: ${eventString}`)
+        let currentShellySchedule = await talkToShelly.scheduleFromShellyToCsv();
+        console.log(`currentShellySchedule: ${currentShellySchedule}`)
+        let newUpdatedSchedule = talkToShelly.addScheduleToOtherSchedules(eventString,currentShellySchedule)
+        console.log(`newUpdatedSchedule: ${newUpdatedSchedule}`)
+        talkToShelly.shellySetNewSchedule(newUpdatedSchedule);
+        // console.log(`old schedule: ${currentShellySchedule}`)
+        // console.log(`new schedule: ${newUpdatedSchedule}`)
+        // console.log("finished getting an event from client and adding it to shelly.")
+    res.send("@server: L63 API.JS")
+        // res.send(`@server: client params: ${req.params.sch}`)
+        // res.send(`@server: old schedule: ${currentShellySchedule}`)
+        // res.send(`@server: new schedule: ${newUpdatedSchedule}`)
     });
 
     router.get("/getUsers", function (req, res) 
@@ -178,4 +197,8 @@ router.get("/sanity", function (req, res)
         });   
     });
 
+
+
+
+    
 module.exports = router
