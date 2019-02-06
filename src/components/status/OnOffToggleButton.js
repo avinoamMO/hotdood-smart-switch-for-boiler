@@ -8,6 +8,7 @@ export default class OnOffToggleButton extends Component {
        
         
     this.props.turnSwitchOnWithInterval(this.props.dialValue);
+    this.props.turnOnTimerRendering();
     
     if(this.props.switchStatus===true){
         console.log("handling turn off")

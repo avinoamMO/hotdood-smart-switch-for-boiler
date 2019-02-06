@@ -84,7 +84,7 @@ export default class AddSchdueleMenu extends Component{
                 </div>
                 <p/>
                 <center>
-                <button onClick={this.sendNewSchedule}>Add</button><button onClick={this.props.closePopUp}>Cancel</button>
+                <button id="saveEventButton" onClick={this.sendNewSchedule}>Add</button><button id="cancelEventButton" onClick={this.props.closePopUp}>Cancel</button>
                 </center>
         </div>)
     }

@@ -18,7 +18,7 @@ export default class dialController extends Component{
             <div>
         <Roundy
          value={this.props.dialValue}
-         min={1}
+         min={0}
          max={120}
          stepSize={1}
          radius={140}

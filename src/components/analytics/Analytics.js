@@ -10,7 +10,7 @@ export default class Analytics extends Component {
   render() {
 
     
-    const deviceUsageByUsers = [ // need to built the api route in server to produce this format of data.
+    const deviceUsageByUsers = [ 
       {
         "AnswerRef": "one",
         "Text": "Lidor",
