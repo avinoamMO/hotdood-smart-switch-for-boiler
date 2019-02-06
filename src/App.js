@@ -70,6 +70,20 @@ export default class App extends Component {
           console.log(error);
         });
     }
+
+    deleteAnEvent = (sch) =>{
+      let data = JSON.stringify(sch)
+      axios
+        .get(`http://localhost:3007/deleteAnEvent/${data}`)
+        .then(res => {
+          // this.setState({ operationrecords: res.data });
+          
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    }
+
      getOperationRecords = () => {
       axios
         .get(`http://localhost:3007/getOperationRecords`)
@@ -148,6 +162,7 @@ export default class App extends Component {
       <Route path="/schedules" exact render={() => <Schedules
                                                       getSchedules={this.getSchedules}
                                                       setNewSchedule={this.setNewSchedule}
+                                                      deleteAnEvent={this.deleteAnEvent}
                                                       schedules = {this.state.schedules}
                                                       isScheduleOn = {this.state.isScheduleOn} />}/>
       

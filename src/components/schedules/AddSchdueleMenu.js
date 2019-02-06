@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-
+ 
 
 export default class AddSchdueleMenu extends Component{
     constructor (){
         super()
         this.state = {
-                            timeOn:     "00:00",
+                            timeOn: "00:00",
                             timeOff: "00:00", 
                             duration : "0",
                             sunday : false,

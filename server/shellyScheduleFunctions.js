@@ -3,6 +3,7 @@ var rp = require('request-promise');
 
 
 class TalkToShelly {
+  
   changeEventToShellyFormat(event) {
     /*
         Input: 
@@ -124,7 +125,28 @@ class TalkToShelly {
     console.log((newEvents += currentSchedule));
     return (newEvents += currentSchedule);
   }
-
+  async removeEventFromSchedule(value, list){
+/*
+            Input:
+            (1) str1 = "1115-0-on"
+            (2) str2 = "1115-0-on,1145-0-off,1115-2-on,1117-3-on,1122-2-off,1145-2-on"
+        
+            Output:
+                strO  = "1145-0-off,1115-2-on,1117-3-on,1122-2-off,1145-2-on"
+        */
+       value = value.split(`"`)[1]
+        console.log(`list before removal: ${list}`)
+       console.log(`need to remove:  ${value}`)
+  let values = list.split(",");
+  for(let i = 0 ; i < values.length ; i++) {
+    if(values[i] == value) {
+      values.splice(i, 1);
+      return values.join(",");
+    }
+  }
+  console.log(`list after removal: ${list}`)
+  return list;
+  }
   shellySetNewSchedule(newSchedule) {
     /*
         Input: Weekly schedule for Shelly.

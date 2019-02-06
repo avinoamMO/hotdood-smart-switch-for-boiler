@@ -33,6 +33,33 @@ router.get("/sanity", function (req, res)
         res.send("OK")
     });
     
+    
+    router.get("/deleteAnEvent/:sch", async function (req, res) 
+    {
+        console.log("starting event delete sequence")
+        let eventObj = JSON.parse(req.params.sch); 
+        console.log(`eventObj to delete: ${JSON.stringify(eventObj)}`)
+
+        let eventString = talkToShelly.changeEventToShellyFormat(eventObj);
+        console.log(`eventString to delete: ${eventString}`)
+
+        let currentShellySchedule = await talkToShelly.scheduleFromShellyToCsv();
+        console.log(`currentShellySchedule before delete: ${currentShellySchedule}`)
+
+        let newUpdatedSchedule = await talkToShelly.removeEventFromSchedule(JSON.stringify(eventObj),currentShellySchedule)
+        console.log(`newUpdatedSchedule after delete: ${newUpdatedSchedule}`)
+
+        talkToShelly.shellySetNewSchedule(newUpdatedSchedule);
+        // console.log(`old schedule: ${currentShellySchedule}`)
+        // console.log(`new schedule: ${newUpdatedSchedule}`)
+        // console.log("finished getting an event from client and adding it to shelly.")
+    res.send("@server: L63 API.JS")
+        // res.send(`@server: client params: ${req.params.sch}`)
+        // res.send(`@server: old schedule: ${currentShellySchedule}`)
+        // res.send(`@server: new schedule: ${newUpdatedSchedule}`)
+    });
+
+
     router.get("/saveNewSchedule/:sch", async function (req, res) 
     {
         /* 
