@@ -1,9 +1,55 @@
 const request = require("request");
-var rp = require('request-promise');
-
+var rp = require("request-promise");
 
 class TalkToShelly {
-  
+
+  getSchedules = async () =>{
+    
+    let json = "";
+    const options = {
+      url: "http://192.168.43.170/settings/relay/0?schedule_rules",
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "Accept-Charset": "utf-8"
+      }
+    };
+
+    let data = await rp(options.url);
+    return(JSON.parse(data));
+  }
+
+  getStatus = async () =>{
+    let json = "";
+    const options = {
+      url: "http://192.168.43.170/settings/relay/0?status",
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "Accept-Charset": "utf-8"
+      }
+    };
+
+    let data = await rp(options.url);
+    return(JSON.parse(data.ison));
+  }
+
+  deleteAnEvent = async (eventObj) =>
+  {
+    let eventString = this.changeEventToShellyFormat(eventObj);
+    let currentShellySchedule = await this.scheduleFromShellyToCsv();
+    let newUpdatedSchedule = await this.removeEventFromSchedule(JSON.stringify(eventObj),currentShellySchedule)
+    this.shellySetNewSchedule(newUpdatedSchedule);
+  }
+
+  saveNewSchedule = async (eventObj) =>{
+    
+    let eventString = this.changeEventToShellyFormat(eventObj);
+    let currentShellySchedule = await this.scheduleFromShellyToCsv();
+    let newUpdatedSchedule = this.addScheduleToOtherSchedules(eventString,currentShellySchedule)
+    this.shellySetNewSchedule(newUpdatedSchedule);
+  }
+
   changeEventToShellyFormat(event) {
     /*
         Input: 
@@ -22,6 +68,8 @@ class TalkToShelly {
         
         Output:
         string = "1115-0-on,1145-0-off,1115-2-on,1117-3-on,1122-2-off,1145-2-on"
+
+        per each value: HHMM-D-ACTION where HHMM is the time, D is the weekday (0=monday, 7=sunday), ACTION being on or off.
         */
 
     let string = "";
@@ -40,13 +88,14 @@ class TalkToShelly {
         event.timeOff.split(":")[1]
       }-${c}-off,`;
     });
-    console.log(string);
-    return string;
 
-    // TODO: MAKE SURE THERE'S NO DANGLING COMMA!!!!! (unless shelly is forgiving for that.)
+    return string;
   }
 
   async scheduleFromShellyToCsv() {
+    // Input: Gets the current schedule from Shelly in an array format.
+    // Output: Returns the same in a single CSV string.
+
     let json = "";
     const options = {
       url: "http://192.168.43.170/settings/relay/0?schedule_rules",
@@ -57,95 +106,43 @@ class TalkToShelly {
       }
     };
 
-    let data = await rp(options.url) 
-      // logic goes here
-      console.log("server talking to shelly");
-      
-      //   console.log("L68 [dis mins talktoshelly talked to shelly.]")
-      let string = ""
-        let lorem = JSON.parse(data);
-        let arrayFromShelly = lorem.schedule_rules;
-        console.log(`arrayfromShelly: ${arrayFromShelly}`)
-        arrayFromShelly.forEach(c => {
-        const  temp = c.split("'");
-          // string+=c.split("'")[1]
-          string += temp[0] += ",";
-        }); // NOTE : there's a dangling comma issue HERE (use c,i in the forEach).
+    let data = await rp(options.url);
 
-      console.log(`string l72: ${string}`);
-      console.log(`String returned from server (currentSchedule): ${string}`)
-      return (string)
+    let string = "";
+    let shellyData = JSON.parse(data);
+    let arrayFromShelly = shellyData.schedule_rules;
+    arrayFromShelly.forEach(c => {
+      const temp = c.split("'");
 
+      string += temp[0] += ",";
+    });
+
+    return string;
   }
-
-  /* 
-           Input : none
-        
-           Output : 
-           1115-0-on,1145-0-off,1115-2-on,1117-3-on,1122-2-off,1145-2-on
-           */
-
-  // let string = "";
-  // console.log("trying to get current schedule from shelly")
-
-  // const options = {
-  //     url: 'http://192.168.43.170/settings/relay/0?schedule_rules',
-  //     method: 'GET',
-  //     headers: {
-  //         'Accept': 'application/json',
-  //         'Accept-Charset': 'utf-8'
-  //     }
-  // };
-
-  // request(options, function(err, res, body) {
-  //     //   arrayFromShelly = JSON.parse(body.scheduleRules);
-  //   console.log("L68 [dis mins talktoshelly talked to shelly.]")
-  //   let lorem = JSON.parse(body);
-  //   let arrayFromShelly = lorem.schedule_rules;
-  //   arrayFromShelly.forEach(c => {
-  //   const  temp = c.split("'");
-  //     // string+=c.split("'")[1]
-  //     string += temp[0] += ",";
-  //   }); // NOTE : there's a dangling comma issue.
-
-  //   console.log(string);
-  //   return string;
-  // });
-  // console.log("endOfscheduleFromShellyToCsv");
 
   addScheduleToOtherSchedules(newEvents, currentSchedule) {
-    /*
-            Input:
-            (1) str1 = "1115-0-on,1145-0-off,1115-2-on,1117-3-on,1122-2-off,1145-2-on"
-            (2) str2 = "1115-0-on,1145-0-off,1115-2-on,1117-3-on,1122-2-off,1145-2-on"
-        
-            Output:
-            "1115-0-on,1145-0-off,1115-2-on,1117-3-on,1122-2-off,1145-2-on, 1115-0-on,1145-0-off,1115-2-on,1117-3-on,1122-2-off,1145-2-on"
-        */
-    console.log((newEvents += currentSchedule));
     return (newEvents += currentSchedule);
   }
-  async removeEventFromSchedule(value, list){
-/*
+
+  async removeEventFromSchedule(value, list) {
+    /*
             Input:
-            (1) str1 = "1115-0-on"
-            (2) str2 = "1115-0-on,1145-0-off,1115-2-on,1117-3-on,1122-2-off,1145-2-on"
+             value - an event that needs to be removed from schedule.
+             list - the entire schedule.
         
             Output:
-                strO  = "1145-0-off,1115-2-on,1117-3-on,1122-2-off,1145-2-on"
-        */
-       value = value.split(`"`)[1]
-        console.log(`list before removal: ${list}`)
-       console.log(`need to remove:  ${value}`)
-  let values = list.split(",");
-  for(let i = 0 ; i < values.length ; i++) {
-    if(values[i] == value) {
-      values.splice(i, 1);
-      return values.join(",");
+                 Returns list after removing any events that are identical to 'value'.
+*/
+    value = value.split(`"`)[1];
+    let values = list.split(",");
+    for (let i = 0; i < values.length; i++) {
+      if (values[i] == value) {
+        values.splice(i, 1);
+        return values.join(",");
+      }
     }
-  }
-  console.log(`list after removal: ${list}`)
-  return list;
+
+    return list;
   }
   shellySetNewSchedule(newSchedule) {
     /*
@@ -164,33 +161,8 @@ class TalkToShelly {
 
     request(options, function(err, res, body) {
       json = JSON.parse(body);
-      console.log(json);
-      // response.send(json);
     });
   }
 }
 
 module.exports = TalkToShelly;
-/// TESTING :
-
-// Stage 1:
-// changeEventToShellyFormat(
-//     {timeOn: "11:15",
-//     timeOff: "11:45",
-//     monday: true,
-//     tuesday: false,
-//     wednsday: true,
-//     thursday: true,
-//     friday: false,
-//     saturday: false,
-//     sunday: false}); // DIS WORKS!
-
-// Stage 2:
-// scheduleFromShellyToCsv(); // DIS WORKS!
-
-//Stage 3:
-
-// addScheduleToOtherSchedules("str1","str2"); // DIS WORKS!
-
-// Stage 4:
-// shellySetNewSchedule("1115-02-on"); // DIS WORKS!!!@

@@ -9,7 +9,7 @@ export default class Analytics extends Component {
 
   render() {
 
-    
+// Mock data:    
     const deviceUsageByUsers = [ 
       {
         "AnswerRef": "one",
@@ -40,7 +40,8 @@ export default class Analytics extends Component {
         "Rank": 4
       }
   ];
-
+  
+// Mock data:
   const yearlyUsageData = [
     {date: 'Page A', count: 4000, pv: 2400, amt: 2400},
     {date: 'Page B', count: 3000, pv: 1398, amt: 2210},
