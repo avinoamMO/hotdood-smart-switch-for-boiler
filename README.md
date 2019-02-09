@@ -15,5 +15,3 @@ To be developed:
 - Usage log and analytics (the current module displays mock data).
 - Device management module including the possibility of automatic shut-down after a user-specified time period of continous operation.
 - User management settings including a 'kid mode' for users and user-specific permissions.
-
-This was my solo project in a fullstack web development course.
