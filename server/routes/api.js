@@ -100,10 +100,11 @@ router.get("/deleteAnEvent/:sch", async function (req, res)
     
 
 
-    router.get("/getSchedules", function (req, response) 
+    router.get("/getSchedules", async function (req, response) 
     {
-        
-            response.send(talkToShelly.getSchedules());
+        console.log("l105apijs")
+        console.log(await talkToShelly.getSchedules())
+            response.send(await talkToShelly.getSchedules());
         
     });
 
@@ -127,9 +128,12 @@ router.get("/deleteAnEvent/:sch", async function (req, res)
 
     router.get("/status", async function (req, response) 
     {
+        console.log("got request for switch status")
+        
         let data = await talkToShelly.getStatus()
-
-        return data
+        console.log(data)
+        
+        response.send(data)
     });
 
 module.exports = router

@@ -3,7 +3,7 @@ var rp = require("request-promise");
 
 class TalkToShelly {
 
-  getSchedules = async () =>{
+  async getSchedules(){
     
     let json = "";
     const options = {
@@ -16,10 +16,11 @@ class TalkToShelly {
     };
 
     let data = await rp(options.url);
-    return(JSON.parse(data));
+    data = JSON.parse(data)
+    return(data);
   }
 
-  getStatus = async () =>{
+  async getStatus(){
     let json = "";
     const options = {
       url: "http://192.168.43.170/settings/relay/0?status",
@@ -31,10 +32,11 @@ class TalkToShelly {
     };
 
     let data = await rp(options.url);
-    return(JSON.parse(data.ison));
+    console.log(JSON.parse(data))
+    return(JSON.parse(data).ison);
   }
 
-  deleteAnEvent = async (eventObj) =>
+  async deleteAnEvent (eventObj)
   {
     let eventString = this.changeEventToShellyFormat(eventObj);
     let currentShellySchedule = await this.scheduleFromShellyToCsv();
@@ -42,7 +44,7 @@ class TalkToShelly {
     this.shellySetNewSchedule(newUpdatedSchedule);
   }
 
-  saveNewSchedule = async (eventObj) =>{
+  async saveNewSchedule (eventObj){
     
     let eventString = this.changeEventToShellyFormat(eventObj);
     let currentShellySchedule = await this.scheduleFromShellyToCsv();
@@ -50,7 +52,7 @@ class TalkToShelly {
     this.shellySetNewSchedule(newUpdatedSchedule);
   }
 
-  changeEventToShellyFormat(event) {
+  async changeEventToShellyFormat(event) {
     /*
         Input: 
         event = 
