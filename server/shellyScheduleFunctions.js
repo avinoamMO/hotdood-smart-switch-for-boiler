@@ -47,32 +47,27 @@ class TalkToShelly {
 
   async changeEventToShellyFormat(event) {
     /*
-        Receives: 
+        Receives an event object: 
         {timeOn: "HH:MM",timeOff: "HH:MM",monday: boolean,tuesday: boolean,wednsday: boolean,thursday: boolean,friday: boolean,saturday: boolean,sunday: boolean}
         
         Returns:
-        string = "HHMM-D-ACTION" (if multiple weekdays are true, it retuns a CSV string of the events)
-        Where D is the weekday (0=monday, 7=sunday), ACTION is on or off
+        
+        string = "HHMM-D-ACTION" Where D is the weekday (0=monday, 6=sunday), ACTION is on or off
+        
+        example: "1111-0-on,1112-0-off,1111-1-on,1112-1-off,1111-2-on,1112-2-off,1111-6-on,1112-6-off" 
     */
+    let weekdays = ["monday","tuesday","wednsday","thursday","friday","saturday","sunday"]
+    let activityDescription  = ""
+    let activeDays = []
+    
+    for(let day in weekdays)
+         if (event[weekdays[day]]) activeDays.push(day)
 
-    let string = "";
-    let dayOfWeekArr = [];
-    event.monday === true ? dayOfWeekArr.push("0") : null;
-    event.tuesday === true ? dayOfWeekArr.push("1") : null;
-    event.wednsday === true ? dayOfWeekArr.push("2") : null;
-    event.thursday === true ? dayOfWeekArr.push("3") : null;
-    event.friday === true ? dayOfWeekArr.push("4") : null;
-    event.saturday === true ? dayOfWeekArr.push("5") : null;
-    event.sunday === true ? dayOfWeekArr.push("6") : null;
-    dayOfWeekArr.forEach(c => {
-      string += `${event.timeOn.split(":")[0]}${
-        event.timeOn.split(":")[1]
-      }-${c}-on,${event.timeOff.split(":")[0]}${
-        event.timeOff.split(":")[1]
-      }-${c}-off,`;
-    });
+    activeDays.forEach(c => {
+        activityDescription+=`${event.timeOn.split(":")[0]}${event.timeOn.split(":")[1]}-${c}-on,${event.timeOff.split(":")[0]}${event.timeOff.split(":")[1]}-${c}-off,`
+    })
 
-    return string;
+    return activityDescription 
   }
 
   async scheduleFromShellyToCsv() {
