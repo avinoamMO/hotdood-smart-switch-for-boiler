@@ -6,7 +6,7 @@ class TalkToShelly {
     this.deviceIP = deviceIP;
   }
 
-  async turnOff() {
+  turnOff() {
     const options = {
       url: `http://${this.deviceIP}/relay/0?turn=off`,
       method: "GET",
@@ -19,7 +19,7 @@ class TalkToShelly {
     request(options, function(err, res, body) {});
   }
 
-  async turnOn() {
+  turnOn() {
     const options = {
       url: `http://${this.deviceIP}/relay/0?turn=on`,
       method: "GET",
@@ -86,10 +86,10 @@ class TalkToShelly {
       this.shellySetNewSchedule(newUpdatedSchedule);
   }
 
-  async saveNewSchedule(eventObj) {
-    let eventString = this.changeEventToShellyFormat(eventObj);
+   async saveNewSchedule(eventObj) {
+    let eventString = await this.changeEventToShellyFormat(eventObj);
     let currentShellySchedule = await this.scheduleFromShellyToCsv();
-    let newUpdatedSchedule = this.addScheduleToOtherSchedules(eventString,currentShellySchedule);
+    let newUpdatedSchedule = await this.addScheduleToOtherSchedules(eventString,currentShellySchedule);
     this.shellySetNewSchedule(newUpdatedSchedule);
   }
 
@@ -179,6 +179,7 @@ class TalkToShelly {
         Receives: Weekly schedule.
         Output: Sets said schedule as the new schedule on Shelly.
         */
+       console.log(newSchedule)
     let json = "";
     const options = {
       url: `http://${this.deviceIP}/settings/relay/0?schedule_rules=${newSchedule}`,

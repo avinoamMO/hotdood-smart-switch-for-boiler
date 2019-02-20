@@ -25,6 +25,7 @@ router.get("/deleteAnEvent/:sch", async function(req, res) {
 });
 
 router.get("/saveNewSchedule/:sch", async function(req, res) {
+    // console.log(req.params.sch)
   talkToShelly.saveNewSchedule(JSON.parse(req.params.sch));
   res.send("saving schedule")
 });
@@ -45,7 +46,6 @@ router.get("/getoperationrecords", function(req, res) {
 
 router.get("/status", async function(req, response) {
   let data = await talkToShelly.getStatus();
-  console.log(data)
   response.send(data);
 });
 
