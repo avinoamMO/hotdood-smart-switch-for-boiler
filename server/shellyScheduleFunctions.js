@@ -27,27 +27,22 @@ class TalkToShelly {
   async getStatus() {
     return JSON.parse(
       await rp(`http://${this.deviceIP}/settings/relay/0?status`)
-    ).ison;
+    ).ison
   }
 
-  async deleteAnEvent(eventObj) {
-    let currentShellySchedule = await this.scheduleFromShellyToCsv();
-    let newUpdatedSchedule = await this.removeEventFromSchedule(
-      JSON.stringify(eventObj),
-      currentShellySchedule
-    );
+  async deleteAnEvent(event) {
+     
+      this.shellySetNewSchedule(
+      await this.removeEventFromSchedule(JSON.stringify(event),await this.scheduleFromShellyToCsv()))
+  
+    }
 
-    this.shellySetNewSchedule(newUpdatedSchedule);
-  }
-
-  async saveNewSchedule(eventObj) {
-    let eventString = await this.changeEventToShellyFormat(eventObj);
-    let currentShellySchedule = await this.scheduleFromShellyToCsv();
-    let newUpdatedSchedule = await this.addScheduleToOtherSchedules(
-      eventString,
-      currentShellySchedule
-    );
-    this.shellySetNewSchedule(newUpdatedSchedule);
+  async saveNewSchedule(event) {
+    
+    this.shellySetNewSchedule(
+      await this.addScheduleToOtherSchedules(
+        await this.changeEventToShellyFormat(event), await this.scheduleFromShellyToCsv())
+    )
   }
 
   async changeEventToShellyFormat(event) {
