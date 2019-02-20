@@ -1,13 +1,14 @@
 const request = require("request");
 var rp = require("request-promise");
+const deviceIP = "192.168.43.170"; //TODO: Make the IP address be a parameter when instantiating new class (oop)
 
 class TalkToShelly {
+  constructor() {}
 
-  async getSchedules(){
-    
+  async getSchedules() {
     let json = "";
     const options = {
-      url: "http://192.168.43.170/settings/relay/0?schedule_rules",
+      url: `http://${deviceIP}/settings/relay/0?schedule_rules`,
       method: "GET",
       headers: {
         Accept: "application/json",
@@ -16,14 +17,15 @@ class TalkToShelly {
     };
 
     let data = await rp(options.url);
-    data = JSON.parse(data)
-    return(data);
+    data = JSON.parse(data);
+    return data;
   }
 
-  async getStatus(){
-    let json = "";
+  async getStatus() {
+    // Checks if relay is open or closed and returns boolean
+
     const options = {
-      url: "http://192.168.43.170/settings/relay/0?status",
+      url: `http://${deviceIP}/settings/relay/0?status`,
       method: "GET",
       headers: {
         Accept: "application/json",
@@ -32,23 +34,25 @@ class TalkToShelly {
     };
 
     let data = await rp(options.url);
-    console.log(JSON.parse(data))
-    return(JSON.parse(data).ison);
+    return JSON.parse(data).ison;
   }
 
-  async deleteAnEvent (eventObj)
-  {
-    let eventString = this.changeEventToShellyFormat(eventObj);
+  async deleteAnEvent(eventObj) {
     let currentShellySchedule = await this.scheduleFromShellyToCsv();
-    let newUpdatedSchedule = await this.removeEventFromSchedule(JSON.stringify(eventObj),currentShellySchedule)
+    let newUpdatedSchedule = await this.removeEventFromSchedule(
+      JSON.stringify(eventObj),
+      currentShellySchedule
+    );
     this.shellySetNewSchedule(newUpdatedSchedule);
   }
 
-  async saveNewSchedule (eventObj){
-    
+  async saveNewSchedule(eventObj) {
     let eventString = this.changeEventToShellyFormat(eventObj);
     let currentShellySchedule = await this.scheduleFromShellyToCsv();
-    let newUpdatedSchedule = this.addScheduleToOtherSchedules(eventString,currentShellySchedule)
+    let newUpdatedSchedule = this.addScheduleToOtherSchedules(
+      eventString,
+      currentShellySchedule
+    );
     this.shellySetNewSchedule(newUpdatedSchedule);
   }
 
@@ -57,33 +61,33 @@ class TalkToShelly {
         Input: 
         event = 
                 {
-                timeOn: "11:15",
-                timeOff: "11:45",
-                monday: true,
-                tuesday: false,
-                wednsday: true,
-                thursday: true,
-                friday: false,
-                saturday: false,
-                sunday: false,
+                timeOn: "HH:MM",
+                timeOff: "HH:MM",
+                monday: boolean,
+                tuesday: boolean,
+                wednsday: boolean,
+                thursday: boolean,
+                friday: boolean,
+                saturday: boolean,
+                sunday: boolean,
                 }
         
         Output:
-        string = "1115-0-on,1145-0-off,1115-2-on,1117-3-on,1122-2-off,1145-2-on"
-
-        per each value: HHMM-D-ACTION where HHMM is the time, D is the weekday (0=monday, 7=sunday), ACTION being on or off.
+        string = "HHMM-D-on/off"
+        
+        per each value: HHMM-D-ACTION where HHMM is the time, D is the weekday (0=monday, 7=sunday), ACTION is on or off.
         */
 
     let string = "";
-    let arr = [];
-    event.monday === true ? arr.push("0") : null;
-    event.tuesday === true ? arr.push("1") : null;
-    event.wednsday === true ? arr.push("2") : null;
-    event.thursday === true ? arr.push("3") : null;
-    event.friday === true ? arr.push("4") : null;
-    event.saturday === true ? arr.push("5") : null;
-    event.sunday === true ? arr.push("6") : null;
-    arr.forEach(c => {
+    let dayOfWeekArr = [];
+    event.monday === true ? dayOfWeekArr.push("0") : null;
+    event.tuesday === true ? dayOfWeekArr.push("1") : null;
+    event.wednsday === true ? dayOfWeekArr.push("2") : null;
+    event.thursday === true ? dayOfWeekArr.push("3") : null;
+    event.friday === true ? dayOfWeekArr.push("4") : null;
+    event.saturday === true ? dayOfWeekArr.push("5") : null;
+    event.sunday === true ? dayOfWeekArr.push("6") : null;
+    dayOfWeekArr.forEach(c => {
       string += `${event.timeOn.split(":")[0]}${
         event.timeOn.split(":")[1]
       }-${c}-on,${event.timeOff.split(":")[0]}${
@@ -100,7 +104,7 @@ class TalkToShelly {
 
     let json = "";
     const options = {
-      url: "http://192.168.43.170/settings/relay/0?schedule_rules",
+      url: `http://${deviceIP}/settings/relay/0?schedule_rules`,
       method: "GET",
       headers: {
         Accept: "application/json",
@@ -126,25 +130,25 @@ class TalkToShelly {
     return (newEvents += currentSchedule);
   }
 
-  async removeEventFromSchedule(value, list) {
+  async removeEventFromSchedule(event, schedule) {
     /*
             Input:
-             value - an event that needs to be removed from schedule.
-             list - the entire schedule.
+             event - an event that needs to be removed from schedule.
+             schedule - the entire schedule.
         
             Output:
-                 Returns list after removing any events that are identical to 'value'.
+                 Returns schedule after removing any occurances identical to 'event'.
 */
-    value = value.split(`"`)[1];
-    let values = list.split(",");
+    event = event.split(`"`)[1];
+    let values = schedule.split(",");
     for (let i = 0; i < values.length; i++) {
-      if (values[i] == value) {
+      if (values[i] == event) {
         values.splice(i, 1);
         return values.join(",");
       }
     }
 
-    return list;
+    return schedule;
   }
   shellySetNewSchedule(newSchedule) {
     /*
@@ -153,7 +157,7 @@ class TalkToShelly {
         */
     let json = "";
     const options = {
-      url: `http://192.168.43.170/settings/relay/0?schedule_rules=${newSchedule}`,
+      url: `http://${deviceIP}/settings/relay/0?schedule_rules=${newSchedule}`,
       method: "GET",
       headers: {
         Accept: "application/json",
