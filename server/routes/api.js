@@ -27,10 +27,12 @@ router.get("/turnOnWithInterval/:interval", function(req, res) {
 
 router.get("/deleteAnEvent/:sch", async function(req, res) {
   talkToShelly.deleteAnEvent(JSON.parse(req.params.sch));
+  res.send("deleting event")
 });
 
 router.get("/saveNewSchedule/:sch", async function(req, res) {
   talkToShelly.saveNewSchedule(JSON.parse(req.params.sch));
+  res.send("saving schedule")
 });
 
 router.get("/getSchedules", async function(req, response) {
@@ -39,10 +41,12 @@ router.get("/getSchedules", async function(req, response) {
 
 router.get("/getUsers", function(req, res) {
   // TODO (for users support)
+  res.end()
 });
 
 router.get("/getoperationrecords", function(req, res) {
   // TODO (for analytics module)
+  res.end()
 });
 
 router.get("/status", async function(req, response) {
