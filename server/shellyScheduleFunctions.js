@@ -47,14 +47,11 @@ class TalkToShelly {
 
   async changeEventToShellyFormat(event) {
     /*
-        Receives an event object: 
+        Receives event object: 
         {timeOn: "HH:MM",timeOff: "HH:MM",monday: boolean,tuesday: boolean,wednsday: boolean,thursday: boolean,friday: boolean,saturday: boolean,sunday: boolean}
+        Returns CSV string:
+        "HHMM-D-ACTION, HHMM-D-ACTION,...." Where D is the weekday number (0=monday, 6=sunday), ACTION is on or off
         
-        Returns:
-        
-        string = "HHMM-D-ACTION" Where D is the weekday (0=monday, 6=sunday), ACTION is on or off
-        
-        example: "1111-0-on,1112-0-off,1111-1-on,1112-1-off,1111-2-on,1112-2-off,1111-6-on,1112-6-off" 
     */
     let weekdays = ["monday","tuesday","wednsday","thursday","friday","saturday","sunday"]
     let activityDescription  = ""
@@ -63,42 +60,27 @@ class TalkToShelly {
     for(let day in weekdays)
          if (event[weekdays[day]]) activeDays.push(day)
 
-    activeDays.forEach(c => {
-        activityDescription+=`${event.timeOn.split(":")[0]}${event.timeOn.split(":")[1]}-${c}-on,${event.timeOff.split(":")[0]}${event.timeOff.split(":")[1]}-${c}-off,`
-    })
-
+    for(let day in activeDays)
+            activityDescription+=`${event.timeOn.split(":")[0]}${event.timeOn.split(":")[1]}-${day}-on,${event.timeOff.split(":")[0]}${event.timeOff.split(":")[1]}-${day}-off,`
+    
     return activityDescription 
   }
 
   async scheduleFromShellyToCsv() {
-    // Returns shelly's schedule in a single CSV string.
-
-    let json = "";
-    const options = {
-      url: `http://${this.deviceIP}/settings/relay/0?schedule_rules`,
-      method: "GET",
-      headers: {
-        Accept: "application/json",
-        "Accept-Charset": "utf-8"
-      }
-    };
-
-    let data = await rp(options.url);
-
-    let string = "";
-    let shellyData = JSON.parse(data);
-    let arrayFromShelly = shellyData.schedule_rules;
-    arrayFromShelly.forEach(c => {
-      const temp = c.split("'");
-
-      string += temp[0] += ",";
-    });
-
-    return string;
+    // Returns shelly's current schedule in a single CSV string.
+    
+    let activityDescription = ""
+    let schedule =  
+    JSON.parse(await rp(`http://${this.deviceIP}/settings/relay/0?schedule_rules`)).schedule_rules
+       
+    for(let event of schedule)
+          activityDescription += event.split("'")[0] += ","
+    
+    return activityDescription
   }
 
   addScheduleToOtherSchedules(newEvents, currentSchedule) {
-    return (newEvents += currentSchedule);
+    return (newEvents += currentSchedule)
   }
 
   async removeEventFromSchedule(event, schedule) {
