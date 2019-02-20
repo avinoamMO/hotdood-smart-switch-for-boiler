@@ -43,7 +43,7 @@ class TalkToShelly {
       }
     };
 
-    let responseData = await rp(options.url);
+   await rp(options.url);
   }
 
   async getSchedules() {
@@ -79,69 +79,53 @@ class TalkToShelly {
   }
 
   async deleteAnEvent(eventObj) {
-    let currentShellySchedule = await this.scheduleFromShellyToCsv();
-    let newUpdatedSchedule = await this.removeEventFromSchedule(
-      JSON.stringify(eventObj),
-      currentShellySchedule
-    );
-    this.shellySetNewSchedule(newUpdatedSchedule);
+
+      let currentShellySchedule = await this.scheduleFromShellyToCsv();
+      let newUpdatedSchedule = await this.removeEventFromSchedule(JSON.stringify(eventObj),currentShellySchedule);
+
+      this.shellySetNewSchedule(newUpdatedSchedule);
   }
 
   async saveNewSchedule(eventObj) {
     let eventString = this.changeEventToShellyFormat(eventObj);
     let currentShellySchedule = await this.scheduleFromShellyToCsv();
-    let newUpdatedSchedule = this.addScheduleToOtherSchedules(
-      eventString,
-      currentShellySchedule
-    );
+    let newUpdatedSchedule = this.addScheduleToOtherSchedules(eventString,currentShellySchedule);
     this.shellySetNewSchedule(newUpdatedSchedule);
   }
 
   async changeEventToShellyFormat(event) {
     /*
-        Input: 
-        event = 
-                {
-                timeOn: "HH:MM",
-                timeOff: "HH:MM",
-                monday: boolean,
-                tuesday: boolean,
-                wednsday: boolean,
-                thursday: boolean,
-                friday: boolean,
-                saturday: boolean,
-                sunday: boolean,
-                }
+        Receives: 
+        {timeOn: "HH:MM",timeOff: "HH:MM",monday: boolean,tuesday: boolean,wednsday: boolean,thursday: boolean,friday: boolean,saturday: boolean,sunday: boolean}
         
-        Output:
-        string = "HHMM-D-on/off"
-        
-        per each value: HHMM-D-ACTION where HHMM is the time, D is the weekday (0=monday, 7=sunday), ACTION is on or off.
-        */
+        Returns:
+        string = "HHMM-D-ACTION" (if multiple weekdays are true, it retuns a CSV string of the events)
+        Where D is the weekday (0=monday, 7=sunday), ACTION is on or off
+    */
 
     let string = "";
     let dayOfWeekArr = [];
-    event.monday === true ? dayOfWeekArr.push("0") : null;
-    event.tuesday === true ? dayOfWeekArr.push("1") : null;
-    event.wednsday === true ? dayOfWeekArr.push("2") : null;
-    event.thursday === true ? dayOfWeekArr.push("3") : null;
-    event.friday === true ? dayOfWeekArr.push("4") : null;
-    event.saturday === true ? dayOfWeekArr.push("5") : null;
-    event.sunday === true ? dayOfWeekArr.push("6") : null;
+    event.monday === true ? dayOfWeekArr.push("0") : null
+    event.tuesday === true ? dayOfWeekArr.push("1") : null
+    event.wednsday === true ? dayOfWeekArr.push("2") : null
+    event.thursday === true ? dayOfWeekArr.push("3") : null
+    event.friday === true ? dayOfWeekArr.push("4") : null
+    event.saturday === true ? dayOfWeekArr.push("5") : null
+    event.sunday === true ? dayOfWeekArr.push("6") : null
     dayOfWeekArr.forEach(c => {
       string += `${event.timeOn.split(":")[0]}${
         event.timeOn.split(":")[1]
       }-${c}-on,${event.timeOff.split(":")[0]}${
         event.timeOff.split(":")[1]
-      }-${c}-off,`;
+      }-${c}-off,`
     });
 
     return string;
   }
 
   async scheduleFromShellyToCsv() {
-    // Input: Gets the current schedule from Shelly in an array format.
-    // Output: Returns the same in a single CSV string.
+    
+    // Returns shelly's schedule in a single CSV string.
 
     let json = "";
     const options = {
@@ -173,28 +157,27 @@ class TalkToShelly {
 
   async removeEventFromSchedule(event, schedule) {
     /*
-            Input:
-             event - an event that needs to be removed from schedule.
-             schedule - the entire schedule.
-        
-            Output:
-                 Returns schedule after removing any occurances identical to 'event'.
-*/
-    event = event.split(`"`)[1];
-    let values = schedule.split(",");
-    for (let i = 0; i < values.length; i++) {
-      if (values[i] == event) {
-        values.splice(i, 1);
-        return values.join(",");
-      }
-    }
+            Receives: A specific event that needs to be removed and the entire shcedule.
+            Returns: The schedule without any occurances of said event.
+    */
+
+    event = event.split(`"`)[1]
+    let values = schedule.split(",")
+      for (let i = 0; i < values.length; i++) 
+        {
+            if (values[i] == event) 
+            {
+              values.splice(i, 1)
+              return values.join(",")
+            }
+        }
 
     return schedule;
   }
   shellySetNewSchedule(newSchedule) {
     /*
-        Input: Weekly schedule for Shelly.
-        Output: Get request to Shelly that sets the new schedule.
+        Receives: Weekly schedule.
+        Output: Sets said schedule as the new schedule on Shelly.
         */
     let json = "";
     const options = {

@@ -4,12 +4,12 @@ const TalkToShelly = require("../shellyScheduleFunctions.js");
 const talkToShelly = new TalkToShelly("192.168.43.170");
 
 router.get("/turnOff", function(req, res) {
-  talkToShelly.turnOn();
+  talkToShelly.turnOff();
   res.send(`@api.js: turning off`)
 });
 
 router.get("/turnOn", function(req, res) {
-  talkToShelly.turnOff();
+  talkToShelly.turnOn();
   res.send(`@api.js: turning on`)
 });
 
@@ -45,6 +45,7 @@ router.get("/getoperationrecords", function(req, res) {
 
 router.get("/status", async function(req, response) {
   let data = await talkToShelly.getStatus();
+  console.log(data)
   response.send(data);
 });
 
