@@ -9,13 +9,6 @@ const talkToShelly = new TalkToShelly();
 
 const deviceIP = "192.168.43.170"; // Change to IP address of device.
 
-/*
-Useful API routes:
-http://${deviceIP}/status
-http://${deviceIP}/settings/relay/0?schedule_rules
-http://${deviceIP}/settings/relay/0?schedule_rules=1115-0-on,1145-0-off,1115-2-on,1117-3-on,1122-2-off,1145-2-on
-*/
-
 router.get("/turnOff", function(req, res) {
   const options = {
     url: `http://${deviceIP}/relay/0?turn=off`,
@@ -52,25 +45,10 @@ router.get("/turnOn", function(req, res) {
 
 router.get("/turnOnWithInterval/:interval", function(req, res) {
     
-  let interval = parseInt(req.params.interval.split("=")[1]);
-  if (!isNaN(interval) || interval < 0) {
-    console.log("Invalid syntax sent to server");
-    res.send("Invalid syntax sent to server");
-    res.end();
-  }
-  console.log(`turning on with interval = ${interval}`);
-  const options = {
-    url: `http://${deviceIP}/relay/0?turn=on&timer=${interval}`,
-    method: "GET",
-    headers: {
-      Accept: "application/json",
-      "Accept-Charset": "utf-8"
-    }
-  };
-
-  request(options, function(err, res, body) {});
-
-  res.send(`Server asking Shelly to turn on @ interval = ${interval}`);
+    let interval = parseInt(req.params.interval.split("=")[1]);
+        talkToShelly.turnOnWithInterval(interval)
+    res.send(`@api.js: turning on Shelly with ${req.params.interval}ms`)
+  
 });
 
 router.get("/deleteAnEvent/:sch", async function(req, res) {

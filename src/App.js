@@ -125,7 +125,7 @@ export default class App extends Component {
           let interval = parseInt(intervalValueInSeconds);
           interval = interval*60;
           console.log(`interval = ${intervalValueInSeconds}m = ${interval}s`)
-          axios.get(`http://localhost:3007/turnOnWithInterval/int erval=${interval}`).then(res => {
+          axios.get(`http://localhost:3007/turnOnWithInterval/interval=${interval}`).then(res => {
             this.getSwitchStatus();
             if (res.data.ison === false) {
               setTimeout(this.turnSwitchOn, 1500);

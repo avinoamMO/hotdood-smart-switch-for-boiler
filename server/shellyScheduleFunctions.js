@@ -5,6 +5,24 @@ const deviceIP = "192.168.43.170"; //TODO: Make the IP address be a parameter wh
 class TalkToShelly {
   constructor() {}
 
+
+  async turnOnWithInterval(interval){
+
+
+    console.log(`http://${deviceIP}/relay/0?turn=on&timer=${interval}`)
+    const options = {
+      url: `http://${deviceIP}/relay/0?turn=on&timer=${interval}`,
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "Accept-Charset": "utf-8"
+      }
+    };
+
+    let responseData = await rp(options.url);
+   
+    }
+    
   async getSchedules() {
     let json = "";
     const options = {
