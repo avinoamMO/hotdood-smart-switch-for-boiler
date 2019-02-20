@@ -1,10 +1,6 @@
 const express = require("express");
-const request = require("request");
 const router = express.Router();
 const TalkToShelly = require("../shellyScheduleFunctions.js");
-// let User = require("../models/User"); // TODO: Implement analytics module
-// let OperationRecord = require("../models/OperationRecord"); // TODO: Implement analytics module
-
 const talkToShelly = new TalkToShelly("192.168.43.170");
 
 router.get("/turnOff", function(req, res) {

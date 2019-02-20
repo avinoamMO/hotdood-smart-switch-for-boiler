@@ -1,6 +1,5 @@
 const request = require("request");
 var rp = require("request-promise");
-// const deviceIP = "192.168.43.170"; //TODO: Make the IP address be a parameter when instantiating new class (oop)
 
 class TalkToShelly {
   constructor(deviceIP) {
@@ -199,9 +198,7 @@ class TalkToShelly {
         */
     let json = "";
     const options = {
-      url: `http://${
-        this.deviceIP
-      }/settings/relay/0?schedule_rules=${newSchedule}`,
+      url: `http://${this.deviceIP}/settings/relay/0?schedule_rules=${newSchedule}`,
       method: "GET",
       headers: {
         Accept: "application/json",
