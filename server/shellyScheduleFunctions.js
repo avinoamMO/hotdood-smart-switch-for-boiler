@@ -1,13 +1,15 @@
 const request = require("request");
 var rp = require("request-promise");
-const deviceIP = "192.168.43.170"; //TODO: Make the IP address be a parameter when instantiating new class (oop)
+// const deviceIP = "192.168.43.170"; //TODO: Make the IP address be a parameter when instantiating new class (oop)
 
 class TalkToShelly {
-  constructor() {}
+  constructor(deviceIP) {
+    this.deviceIP = deviceIP;
+  }
 
   async turnOff() {
     const options = {
-      url: `http://${deviceIP}/relay/0?turn=off`,
+      url: `http://${this.deviceIP}/relay/0?turn=off`,
       method: "GET",
       headers: {
         Accept: "application/json",
@@ -20,7 +22,7 @@ class TalkToShelly {
 
   async turnOn() {
     const options = {
-      url: `http://${deviceIP}/relay/0?turn=on`,
+      url: `http://${this.deviceIP}/relay/0?turn=on`,
       method: "GET",
       headers: {
         Accept: "application/json",
@@ -32,9 +34,9 @@ class TalkToShelly {
   }
 
   async turnOnWithInterval(interval) {
-    console.log(`http://${deviceIP}/relay/0?turn=on&timer=${interval}`);
+    console.log(`http://${this.deviceIP}/relay/0?turn=on&timer=${interval}`);
     const options = {
-      url: `http://${deviceIP}/relay/0?turn=on&timer=${interval}`,
+      url: `http://${this.deviceIP}/relay/0?turn=on&timer=${interval}`,
       method: "GET",
       headers: {
         Accept: "application/json",
@@ -48,7 +50,7 @@ class TalkToShelly {
   async getSchedules() {
     let json = "";
     const options = {
-      url: `http://${deviceIP}/settings/relay/0?schedule_rules`,
+      url: `http://${this.deviceIP}/settings/relay/0?schedule_rules`,
       method: "GET",
       headers: {
         Accept: "application/json",
@@ -65,7 +67,7 @@ class TalkToShelly {
     // Checks if relay is open or closed and returns boolean
 
     const options = {
-      url: `http://${deviceIP}/settings/relay/0?status`,
+      url: `http://${this.deviceIP}/settings/relay/0?status`,
       method: "GET",
       headers: {
         Accept: "application/json",
@@ -144,7 +146,7 @@ class TalkToShelly {
 
     let json = "";
     const options = {
-      url: `http://${deviceIP}/settings/relay/0?schedule_rules`,
+      url: `http://${this.deviceIP}/settings/relay/0?schedule_rules`,
       method: "GET",
       headers: {
         Accept: "application/json",
@@ -197,7 +199,9 @@ class TalkToShelly {
         */
     let json = "";
     const options = {
-      url: `http://${deviceIP}/settings/relay/0?schedule_rules=${newSchedule}`,
+      url: `http://${
+        this.deviceIP
+      }/settings/relay/0?schedule_rules=${newSchedule}`,
       method: "GET",
       headers: {
         Accept: "application/json",
