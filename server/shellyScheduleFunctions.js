@@ -7,89 +7,46 @@ class TalkToShelly {
   }
 
   turnOff() {
-    const options = {
-      url: `http://${this.deviceIP}/relay/0?turn=off`,
-      method: "GET",
-      headers: {
-        Accept: "application/json",
-        "Accept-Charset": "utf-8"
-      }
-    };
-
-    request(options, function(err, res, body) {});
+    rp(`http://${this.deviceIP}/relay/0?turn=off`);
   }
 
   turnOn() {
-    const options = {
-      url: `http://${this.deviceIP}/relay/0?turn=on`,
-      method: "GET",
-      headers: {
-        Accept: "application/json",
-        "Accept-Charset": "utf-8"
-      }
-    };
-
-    request(options, function(err, res, body) {});
+    rp(`http://${this.deviceIP}/relay/0?turn=on`);
   }
 
-  async turnOnWithInterval(interval) {
-    console.log(`http://${this.deviceIP}/relay/0?turn=on&timer=${interval}`);
-    const options = {
-      url: `http://${this.deviceIP}/relay/0?turn=on&timer=${interval}`,
-      method: "GET",
-      headers: {
-        Accept: "application/json",
-        "Accept-Charset": "utf-8"
-      }
-    };
-
-   await rp(options.url);
+  turnOnWithInterval(interval) {
+    rp(`http://${this.deviceIP}/relay/0?turn=on&timer=${interval}`);
   }
 
   async getSchedules() {
-    let json = "";
-    const options = {
-      url: `http://${this.deviceIP}/settings/relay/0?schedule_rules`,
-      method: "GET",
-      headers: {
-        Accept: "application/json",
-        "Accept-Charset": "utf-8"
-      }
-    };
-
-    let data = await rp(options.url);
-    data = JSON.parse(data);
-    return data;
+    return JSON.parse(
+      await rp(`http://${this.deviceIP}/settings/relay/0?schedule_rules`)
+    );
   }
 
   async getStatus() {
-    // Checks if relay is open or closed and returns boolean
-
-    const options = {
-      url: `http://${this.deviceIP}/settings/relay/0?status`,
-      method: "GET",
-      headers: {
-        Accept: "application/json",
-        "Accept-Charset": "utf-8"
-      }
-    };
-
-    let data = await rp(options.url);
-    return JSON.parse(data).ison;
+    return JSON.parse(
+      await rp(`http://${this.deviceIP}/settings/relay/0?status`)
+    ).ison;
   }
 
   async deleteAnEvent(eventObj) {
+    let currentShellySchedule = await this.scheduleFromShellyToCsv();
+    let newUpdatedSchedule = await this.removeEventFromSchedule(
+      JSON.stringify(eventObj),
+      currentShellySchedule
+    );
 
-      let currentShellySchedule = await this.scheduleFromShellyToCsv();
-      let newUpdatedSchedule = await this.removeEventFromSchedule(JSON.stringify(eventObj),currentShellySchedule);
-
-      this.shellySetNewSchedule(newUpdatedSchedule);
+    this.shellySetNewSchedule(newUpdatedSchedule);
   }
 
-   async saveNewSchedule(eventObj) {
+  async saveNewSchedule(eventObj) {
     let eventString = await this.changeEventToShellyFormat(eventObj);
     let currentShellySchedule = await this.scheduleFromShellyToCsv();
-    let newUpdatedSchedule = await this.addScheduleToOtherSchedules(eventString,currentShellySchedule);
+    let newUpdatedSchedule = await this.addScheduleToOtherSchedules(
+      eventString,
+      currentShellySchedule
+    );
     this.shellySetNewSchedule(newUpdatedSchedule);
   }
 
@@ -105,26 +62,25 @@ class TalkToShelly {
 
     let string = "";
     let dayOfWeekArr = [];
-    event.monday === true ? dayOfWeekArr.push("0") : null
-    event.tuesday === true ? dayOfWeekArr.push("1") : null
-    event.wednsday === true ? dayOfWeekArr.push("2") : null
-    event.thursday === true ? dayOfWeekArr.push("3") : null
-    event.friday === true ? dayOfWeekArr.push("4") : null
-    event.saturday === true ? dayOfWeekArr.push("5") : null
-    event.sunday === true ? dayOfWeekArr.push("6") : null
+    event.monday === true ? dayOfWeekArr.push("0") : null;
+    event.tuesday === true ? dayOfWeekArr.push("1") : null;
+    event.wednsday === true ? dayOfWeekArr.push("2") : null;
+    event.thursday === true ? dayOfWeekArr.push("3") : null;
+    event.friday === true ? dayOfWeekArr.push("4") : null;
+    event.saturday === true ? dayOfWeekArr.push("5") : null;
+    event.sunday === true ? dayOfWeekArr.push("6") : null;
     dayOfWeekArr.forEach(c => {
       string += `${event.timeOn.split(":")[0]}${
         event.timeOn.split(":")[1]
       }-${c}-on,${event.timeOff.split(":")[0]}${
         event.timeOff.split(":")[1]
-      }-${c}-off,`
+      }-${c}-off,`;
     });
 
     return string;
   }
 
   async scheduleFromShellyToCsv() {
-    
     // Returns shelly's schedule in a single CSV string.
 
     let json = "";
@@ -161,16 +117,14 @@ class TalkToShelly {
             Returns: The schedule without any occurances of said event.
     */
 
-    event = event.split(`"`)[1]
-    let values = schedule.split(",")
-      for (let i = 0; i < values.length; i++) 
-        {
-            if (values[i] == event) 
-            {
-              values.splice(i, 1)
-              return values.join(",")
-            }
-        }
+    event = event.split(`"`)[1];
+    let values = schedule.split(",");
+    for (let i = 0; i < values.length; i++) {
+      if (values[i] == event) {
+        values.splice(i, 1);
+        return values.join(",");
+      }
+    }
 
     return schedule;
   }
@@ -179,10 +133,12 @@ class TalkToShelly {
         Receives: Weekly schedule.
         Output: Sets said schedule as the new schedule on Shelly.
         */
-       console.log(newSchedule)
+    console.log(newSchedule);
     let json = "";
     const options = {
-      url: `http://${this.deviceIP}/settings/relay/0?schedule_rules=${newSchedule}`,
+      url: `http://${
+        this.deviceIP
+      }/settings/relay/0?schedule_rules=${newSchedule}`,
       method: "GET",
       headers: {
         Accept: "application/json",
