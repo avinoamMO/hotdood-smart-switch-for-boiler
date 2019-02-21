@@ -23,7 +23,7 @@ export default class Schedules extends Component {
 
   }
 
-  handleSaveNewSchedule = (e) => {
+  handlesaveNewEvent = (e) => {
     this.props.setNewSchedule(e);
     console.log(e)
   }
@@ -49,7 +49,7 @@ export default class Schedules extends Component {
       <div>
       
       <div className="SchedulesPage">
-      {this.state.renderAddSchduele ? <AddSchdueleMenu closePopUp={this.handleClosePopUp} saveSchedule={this.handleSaveNewSchedule} /> : null}
+      {this.state.renderAddSchduele ? <AddSchdueleMenu closePopUp={this.handleClosePopUp} saveSchedule={this.handlesaveNewEvent} /> : null}
       <div id="scheduleHeadline">Schedules</div>
       <div id="listOfCurrentSchedules">
       {this.props.schedules!=null? this.props.schedules.map((c,i)=>{return <Schedule ind={i} data={c} deleteSchedule={this.handleDeleteSchedule}/>}) : <div>loading...</div>}
