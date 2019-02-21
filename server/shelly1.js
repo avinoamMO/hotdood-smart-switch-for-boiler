@@ -1,38 +1,47 @@
+
 var rp = require("request-promise")
 
 module.exports = class TalkToShelly {
+// TalkToShelly is an object that represents the shelly1 device and interacts with it on behalf of the server.
+// shelly1 API documentation: https://shelly-api-docs.shelly.cloud/
+// note: there is no official documentation for all the functions regarding the scheduling system on Shelly1,
+// these were uncovered by insepcting the source code of the product's web (gui) interface system.
 
   constructor(deviceIP) {
-
     this.deviceIP = deviceIP
     this.status = null
-    
   }
 
   async switchRelayMode(interval) {
+    // Switches Shelly on or off. 
+    // If shelly is off and the method receives an internval (miliseconds) it will turn it on with a set-off timer.
     let status = await this.getStatus()
 
     if (interval > 0 && !status)
-      rp(`http://${this.deviceIP}/relay/0?turn=on&timer=${interval}`)
-    else if (status) rp(`http://${this.deviceIP}/relay/0?turn=off`)
-    else rp(`http://${this.deviceIP}/relay/0?turn=on`)
+       rp(`http://${this.deviceIP}/relay/0?turn=on&timer=${interval}`)
+    else if (status) 
+       rp(`http://${this.deviceIP}/relay/0?turn=off`)
+    else 
+       rp(`http://${this.deviceIP}/relay/0?turn=on`)
   }
 
   async getSchedules() {
+    // Returns device's current weekly schedule (data directly from device)
     return JSON.parse(
       await rp(`http://${this.deviceIP}/settings/relay/0?schedule_rules`)
     )
   }
 
   async getStatus() {
-    
+    // Returns whether Shelly is on or off (data directly from device)
     this.status = JSON.parse(
-                  await rp(`http://${this.deviceIP}/settings/relay/0?status`)
-                  ).ison
+      await rp(`http://${this.deviceIP}/settings/relay/0?status`)
+    ).ison
     return this.status
   }
 
   async deleteAnEvent(event) {
+    // Receives an event and deletes it from Shelly's schedule
     this.shellySetNewSchedule(
       await this.removeEventFromSchedule(
         JSON.stringify(event),
@@ -41,13 +50,13 @@ module.exports = class TalkToShelly {
     )
   }
 
-  async saveNewEvent(event) {
+   saveNewEvent(event) {
+    // Receives an event and add's it to Shelly's schedule
     this.shellySetNewSchedule(
-      await this.addScheduleToOtherSchedules(
-        await this.changeEventToShellyFormat(event),
-        await this.scheduleFromShellyToCsv()
+       this.addScheduleToOtherSchedules(this.changeEventToShellyFormat(event)+=this.scheduleFromShellyToCsv())
+        
       )
-    )
+    
   }
 
   changeEventToShellyFormat(event) {
@@ -96,26 +105,19 @@ module.exports = class TalkToShelly {
     return activityDescription
   }
 
-  addScheduleToOtherSchedules(newEvents, currentSchedule) {
-    return (newEvents += currentSchedule)
-  }
+  addScheduleToOtherSchedules (newEvents, currentSchedule){return newEvents += currentSchedule}  
+  
 
   removeEventFromSchedule(eventToRemove, schedule) {
-    /*
-            Receives: schedule in a CSV string, eventToRemove in a string
-            Returns: schedule without occurances of the eventToRemove
-    */
+    // Receives the entire schedule and a specific event to be removed. Returns the schedule string without occurances of the event.
     let events = schedule.split(",")
-    eventToRemove = event.split(`"`)[1]
+    eventToRemove = eventToRemove.split(`"`)[1]
 
     for (let i in events) if (events[i] === eventToRemove) events.splice(i, 1)
-    return schedule
+    return events
   }
 
   shellySetNewSchedule(newSchedule) {
-    rp(
-      `http://${this.deviceIP}/settings/relay/0?schedule_rules=${newSchedule}`
-    )
+    rp(`http://${this.deviceIP}/settings/relay/0?schedule_rules=${newSchedule}`)
   }
 }
-
