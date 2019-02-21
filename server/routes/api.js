@@ -1,22 +1,13 @@
 const express = require("express")
 const router = express.Router()
-const TalkToShelly = require("../shellyScheduleFunctions.js")
+const TalkToShelly = require("../shelly1.js")
 const talkToShelly = new TalkToShelly("192.168.43.170")
 
-router.get("/turnOff", function(req, res) {
-  talkToShelly.turnOff()
-  res.send(`@api.js: turning off`)
-})
 
-router.get("/turnOn", function(req, res) {
-  talkToShelly.turnOn()
-  res.send(`@api.js: turning on`)
-})
+router.get("/switchRelayMode", function(req, res) {
 
-router.get("/turnOnWithInterval/:interval", function(req, res) {
-  let interval = parseInt(req.params.interval.split("=")[1])
-  talkToShelly.turnOnWithInterval(interval)
-  res.send(`@api.js: turning on Shelly with ${req.params.interval}ms`)
+  talkToShelly.switchRelayMode(req.params.interval)
+    res.end();
 })
 
 router.get("/deleteAnEvent/:sch", async function(req, res) {
