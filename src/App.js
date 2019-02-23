@@ -10,7 +10,6 @@ import Settings from "./components/settings/Settings";
 import Login from "./components/Login";
 import ManageUsers from "./components/settings/ManageUsers";
 import ManageDevice from "./components/settings/ManageDevice";
-
 import {
   getSchedules,
   setNewSchedule,
@@ -32,7 +31,9 @@ export default class App extends Component {
   }
 
   componentDidMount() {
-    this.getSwitchStatus();
+    let status = getSwitchStatus();
+    console.log(status);
+    this.setState(status);
   }
 
   render() {
@@ -42,14 +43,14 @@ export default class App extends Component {
           <SideBar pageWrapId={"page-wrap"} outerContainerId={"App"} />
           <Route
             path="/status"
-            exact
-            render={() => (
+            exactrender={() => (
               <Status
                 switchStatus={this.state.switchStatus}
-                switchRelayMode={this.switchRelayMode}
+                switchRelayMode={switchRelayMode}
               />
             )}
           />
+
           <Route path="/analytics" exact render={() => <Analytics />} />
 
           <Route
@@ -57,9 +58,9 @@ export default class App extends Component {
             exact
             render={() => (
               <Schedules
-                getSchedules={this.getSchedules}
-                setNewSchedule={this.setNewSchedule}
-                deleteAnEvent={this.deleteAnEvent}
+                getSchedules={getSchedules}
+                setNewSchedule={setNewSchedule}
+                deleteAnEvent={deleteAnEvent}
                 schedules={this.state.schedules}
                 isScheduleOn={this.state.isScheduleOn}
               />

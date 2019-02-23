@@ -33,6 +33,7 @@ export default class Status extends Component {
 
   render() {
     let timeString = this.calculateMinsToString();
+    console.log('moishe')
     return (
       <div className="statusPage">
         <div id="dialController">
@@ -41,6 +42,7 @@ export default class Status extends Component {
             changeDialValue={this.handleChangeDialValue}
           />
         </div>
+        
         <div id="dialDigit">
           <b>{timeString}</b>
         </div>

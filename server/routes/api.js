@@ -16,7 +16,7 @@ router.get("/deleteAnEvent/:sch", async function(req, res) {
 
 router.get("/saveNewEvent/:event", async function(req, res) {
   // Add input validation.
-  
+
   res.send(await talkToShelly.saveNewEvent(JSON.parse(req.params.event)));
 });
 
