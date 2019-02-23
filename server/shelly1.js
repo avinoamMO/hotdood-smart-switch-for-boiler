@@ -1,11 +1,10 @@
-
 var rp = require("request-promise")
 
 module.exports = class TalkToShelly {
 // TalkToShelly is an object that represents the shelly1 device and interacts with it on behalf of the server.
 // shelly1 API documentation: https://shelly-api-docs.shelly.cloud/
 // note: there is no official documentation for all the functions regarding the scheduling system on Shelly1,
-// these were uncovered by insepcting the source code of the product's web (gui) interface system.
+// these were uncovered by insepcting the source code of the product's web interface.
 
   constructor(deviceIP) {
     this.deviceIP = deviceIP
@@ -15,6 +14,7 @@ module.exports = class TalkToShelly {
   async switchRelayMode(interval) {
     // Switches Shelly on or off. 
     // If shelly is off and the method receives an internval (miliseconds) it will turn it on with a set-off timer.
+    //TODO: add input validation
     let status = await this.getStatus()
 
     if (interval > 0 && !status)
@@ -42,6 +42,7 @@ module.exports = class TalkToShelly {
 
   async deleteAnEvent(event) {
     // Receives an event and deletes it from Shelly's schedule
+    //TODO: add input validation
     this.shellySetNewSchedule(
       await this.removeEventFromSchedule(
         JSON.stringify(event),
@@ -50,11 +51,11 @@ module.exports = class TalkToShelly {
     )
   }
 
-   saveNewEvent(event) {
+   async saveNewEvent(event) {
     // Receives an event and add's it to Shelly's schedule
-    this.shellySetNewSchedule(
-       this.addScheduleToOtherSchedules(this.changeEventToShellyFormat(event)+=this.scheduleFromShellyToCsv())
-        
+    //TODO: add input validation
+    return this.shellySetNewSchedule(
+       this.addScheduleToOtherSchedules(await this.changeEventToShellyFormat(event),await this.scheduleFromShellyToCsv())
       )
     
   }
@@ -76,6 +77,7 @@ module.exports = class TalkToShelly {
       "saturday",
       "sunday"
     ]
+    
     let activityDescription = ""
     let activeDays = []
 
@@ -119,5 +121,6 @@ module.exports = class TalkToShelly {
 
   shellySetNewSchedule(newSchedule) {
     rp(`http://${this.deviceIP}/settings/relay/0?schedule_rules=${newSchedule}`)
+    return newSchedule
   }
 }
