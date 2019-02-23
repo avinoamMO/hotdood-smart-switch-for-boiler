@@ -29,16 +29,12 @@ export default class Schedules extends Component {
   }
 
   handleDeleteSchedule = (e) => {
-    console.log(`@schedules.js: called for delete of an event in the schedule.`)
-    console.log(`handling request to delete the event ${e}`)
     this.props.deleteAnEvent(e);
     this.props.getSchedules();
-    let tempState = this.state
   }
   render() {
     
     if(this.props.schedules!==false){
-      console.log(this.props.schedules) // this is an array of schedules
     }
     if(this.props.schedules!=null){
       if(this.props.schedules.length>0){

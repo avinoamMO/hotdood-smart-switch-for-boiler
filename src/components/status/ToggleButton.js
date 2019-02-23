@@ -9,7 +9,7 @@ export default class ToggleButton extends Component {
     if (this.props.switchStatus !== null) {
       return (
         <div id="toggleButton">
-          {" "}
+          
           {
             <form>
               <input

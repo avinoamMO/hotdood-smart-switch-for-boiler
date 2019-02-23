@@ -9,7 +9,6 @@ export default class ManageUsers extends Component {
   render() {
       // Make this a popup menu.
       if(this.props.users!=null){
-        console.log(this.props.users)
       }
     return (
       <div className="ManageUsersPage">

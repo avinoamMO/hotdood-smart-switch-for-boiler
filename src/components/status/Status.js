@@ -1,8 +1,7 @@
 import React, { Component } from "react";
 import ToggleButton from "./ToggleButton";
-import Roundy from "roundy";
 import DialController from "./DialController";
-import Countdown from "react-countdown-now";
+// TODO: implement countdown ; import Countdown from "react-countdown-now"
 
 export default class Status extends Component {
   constructor() {
@@ -33,10 +32,7 @@ export default class Status extends Component {
   };
 
   render() {
-    const value = this.state.something;
-    console.log(this.props);
     let timeString = this.calculateMinsToString();
-
     return (
       <div className="statusPage">
         <div id="dialController">
@@ -58,9 +54,7 @@ export default class Status extends Component {
           />
         </div>
         <center>
-          {/* Quick acction buttons */
-          /* <button>Turn on for 45 minutes</button><p/> */}
-          {/* <button>Turn on for 1 hour</button> */}
+          {/* TODO: add quick action buttons */}
         </center>
       </div>
     );

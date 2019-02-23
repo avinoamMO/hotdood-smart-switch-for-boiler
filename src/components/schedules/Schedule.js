@@ -31,7 +31,6 @@ export default class Schedule extends Component {
     }
   }
   render() {
-      console.log(this.props.data)
       this.props.data.split("-")
       let timeOfDay = this.props.data.split("-")[0] 
       let dayOfWeek = this.returnDayOfWeekByNum(this.props.data.split("-")[1])

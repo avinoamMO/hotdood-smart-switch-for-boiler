@@ -9,7 +9,7 @@ export default class Login extends Component {
       <center>
           <p/>
       Welcome back, Morgan.
-      <Link to='/status'><img alt='users profile photo' width="50%" height="50%" src={Morgan}/></Link>
+      <Link to='/status'><img alt='users profile' width="50%" height="50%" src={Morgan}/></Link>
 
       <p/>
       Not you?<p/> sign in as another user.

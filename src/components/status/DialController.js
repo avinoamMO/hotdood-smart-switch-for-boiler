@@ -1,7 +1,7 @@
 import Roundy from 'roundy';
 import React, { Component } from 'react';
 
-//Roundy: https://github.com/themre/roundy
+// Roundy: https://github.com/themre/roundy
 
 export default class dialController extends Component{
     constructor(){
@@ -10,10 +10,7 @@ export default class dialController extends Component{
     }
 
     render(){
-        const value = this.state.something
-
-        //TODO: roundy needs to be able to set start the device.
-        //TODO: roundy needs to retrieve value from device when initialized.
+        //TODO: roundy needs to retrieve value  when initialized.
         return(
             <div>
         <Roundy
@@ -24,16 +21,9 @@ export default class dialController extends Component{
          radius={140}
          arcSize={360}
          color='black'
-         onChange={value => this.props.changeDialValue(value)}
-        //  onAfterChange={(value, props) => this.props.turnSwitchOnWithInterval(value, props)}
-        //  onClick={this.props.turnSwitchOnWithInterval(value)}
+         onChange={value => this.props.changeDialValue(value)}      
          sliced={true}
          bgColor='gray'
-
-        //  onAfterChange={value => this.props.turnSwitchOnWithInterval(value)}
-        //  `hsl(${state.value}, 50%, 50%)`
-        //  onAfterChange={(value, props) => ... }
-        //  overrideStyle={ ... string template as CSS ...}
       /> 
             </div>
         )
