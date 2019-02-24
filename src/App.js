@@ -10,6 +10,8 @@ import Settings from "./components/settings/Settings";
 import Login from "./components/Login";
 import ManageUsers from "./components/settings/ManageUsers";
 import ManageDevice from "./components/settings/ManageDevice";
+import { observer } from 'mobx-react'
+
 import {
   getSchedules,
   setNewSchedule,
@@ -18,7 +20,9 @@ import {
   switchRelayMode
 } from "./shellyFunctions";
 
-export default class App extends Component {
+@observer
+
+ class App extends Component {
   constructor() {
     super();
 
@@ -80,3 +84,4 @@ export default class App extends Component {
     );
   }
 }
+export default App
