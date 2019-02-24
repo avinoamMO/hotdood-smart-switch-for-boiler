@@ -16,5 +16,6 @@ Todo:
 - The client-side is under heavy coding at the moment as it is being re-structured to work with MobX, most features are broken in the current version. 
 - Once MobX is set up, a logging system will be implemented that will document all operations and display them in the analytics module.
 - Unit tests and input validation will be implemented after MobX.
+- Implement count-down timer
 - Customizable quick-action buttons to be added to main module.
 - A 'maximal up time' setting will be developed as well.
