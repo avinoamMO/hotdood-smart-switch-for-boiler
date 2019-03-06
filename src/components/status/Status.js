@@ -36,6 +36,7 @@ export default class Status extends Component {
     console.log('moishe')
     return (
       <div className="statusPage">
+      
         <div id="dialController">
           <DialController
             dialValue={this.state.dialValue}
@@ -49,6 +50,7 @@ export default class Status extends Component {
         <div id="toggleButtonDiv">
           <ToggleButton
             label=""
+            switchStatus={this.props.switchStatus}
             switchRelayMode={this.props.switchRelayMode}
             dialValue={this.state.dialValue}
             changeDialValue={this.handleChangeDialValue}
@@ -57,7 +59,8 @@ export default class Status extends Component {
         </div>
         <center>
           {/* TODO: add quick action buttons */}
-        </center>
+        </center> 
+        
       </div>
     );
   }

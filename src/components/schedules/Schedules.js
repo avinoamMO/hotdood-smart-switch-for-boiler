@@ -18,7 +18,6 @@ export default class Schedules extends Component {
   }
   
   handleClosePopUp = ()=>{
-    
     this.setState({renderAddSchduele : false})
 
   }
@@ -33,7 +32,6 @@ export default class Schedules extends Component {
     this.props.getSchedules();
   }
   render() {
-    
     if(this.props.schedules!==false){
     }
     if(this.props.schedules!=null){

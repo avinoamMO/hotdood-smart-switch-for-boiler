@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
+import rp from 'request-promise'
 import "./css/App.css";
 import "./css/styles.css";
 import SideBar from "./components/sidebar";
@@ -10,17 +11,8 @@ import Settings from "./components/settings/Settings";
 import Login from "./components/Login";
 import ManageUsers from "./components/settings/ManageUsers";
 import ManageDevice from "./components/settings/ManageDevice";
-import { observer } from 'mobx-react'
 
-import {
-  getSchedules,
-  setNewSchedule,
-  deleteAnEvent,
-  getSwitchStatus,
-  switchRelayMode
-} from "./shellyFunctions";
 
-@observer
 
  class App extends Component {
   constructor() {
@@ -33,24 +25,65 @@ import {
       timerInterval: null
     };
   }
+  async getSwitchStatus() {
+    let status = await rp(`http://localhost:3007/status`)
+    this.setState({switchStatus:JSON.parse(status)})
+  }
+  switchRelayMode = (interavlValueInMinutes, props)=> {
+    rp(`http://localhost:3007/switchRelayMode/${interavlValueInMinutes * 60}`)
+    this.setState({switchStatus:!this.state.switchStatus})
+  }
+
+   getSchedules = async () => {
+    let data = await rp(`http://localhost:3007/getSchedules`)
+    data = JSON.parse(data)
+    this.setState({
+          schedules: data.schedule_rules,
+          isScheduleOn: data.schedule
+        });
+      
+  }
+  
+ setNewSchedule = async (sch) => {
+    let data = await rp(`http://localhost:3007/saveNewEvent/${sch}`)
+
+        this.setState({ operationrecords: data });
+  
+        this.getSchedules();
+
+  }
+  
+   deleteAnEvent= async(sch) => {
+    sch = JSON.stringify(sch);
+    let data = await rp(`http://localhost:3007/deleteAnEvent/${sch}`)
+      
+        this.setState({ operationrecords: data });
+        this.getSchedules();
+    
+      };
+  
+  
+
+
+
 
   componentDidMount() {
-    let status = getSwitchStatus();
-    console.log(status);
-    this.setState(status);
+    this.getSwitchStatus();
   }
 
   render() {
+    
     return (
       <Router>
         <div>
           <SideBar pageWrapId={"page-wrap"} outerContainerId={"App"} />
           <Route
             path="/status"
-            exactrender={() => (
+            exact
+            render={() => (
               <Status
                 switchStatus={this.state.switchStatus}
-                switchRelayMode={switchRelayMode}
+                switchRelayMode={this.switchRelayMode}
               />
             )}
           />
@@ -62,9 +95,9 @@ import {
             exact
             render={() => (
               <Schedules
-                getSchedules={getSchedules}
-                setNewSchedule={setNewSchedule}
-                deleteAnEvent={deleteAnEvent}
+                getSchedules={this.getSchedules}
+                setNewSchedule={this.setNewSchedule}
+                deleteAnEvent={this.deleteAnEvent}
                 schedules={this.state.schedules}
                 isScheduleOn={this.state.isScheduleOn}
               />
