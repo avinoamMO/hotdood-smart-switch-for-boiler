@@ -1,17 +1,21 @@
-Welcome to the remote water heater management system, also known as the 'Hot Dood' (dood in Hebrew means water heater).
+Water Heater Management System.
 
-This program allows you to control and manage the water heater system when it is connected to the smart relay switch 'shelly1'.
+This web-app enables remote management of a water heater system. This software relies on interaction with a smart relay switch device called 'shelly1' (https://shelly.cloud/shelly1-open-source/)
 
-Features:
+The project was built in a hackathon during a coding bootcamp and is currently being omptimized to comply with proper coding practices and standards.
 
-- Turn on the heater.
-- The off the heater.
-- Turn on the heater, with an automatic set-off timer set by the user (0-120 minutes)
-- Set a weekly schedule for the heater's operation.
+Supported features:
 
-To be developed:
+- Immediate turn on/off.
+- Turn on with a set-off timer (i.e turn on the water heater for x minutes)
+- A repeating weekly scheduling system.
 
-- Customizable quick-action buttons.
-- Usage log and analytics (the current module displays mock data).
-- Device management module including the possibility of automatic shut-down after a user-specified time period of continous operation.
-- User management settings including a 'kid mode' for users and user-specific permissions.
+Todo:
+
+- The app is currently only functional when operated within the same LAN as the shelly 1 device. This will be solved by either port forwarding the device communication through the router (bad security practice) or by running a node that will be accessible from the WWW and handle the communication within the LAN. 
+- The client-side is under heavy coding at the moment as it is being re-structured to work with MobX, most features are broken in the current version. 
+- Once MobX is set up, a logging system will be implemented that will document all operations and display them in the analytics module.
+- Unit tests and input validation will be implemented after MobX.
+- Implement count-down timer
+- Customizable quick-action buttons to be added to main module.
+- A 'maximal up time' setting will be developed as well.
