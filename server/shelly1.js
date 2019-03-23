@@ -54,9 +54,11 @@ module.exports = class TalkToShelly {
    async saveNewEvent(event) {
     // Receives an event and add's it to Shelly's schedule
     //TODO: add input validation
-    return this.shellySetNewSchedule(
-       this.addScheduleToOtherSchedules(await this.changeEventToShellyFormat(event),await this.scheduleFromShellyToCsv())
-      )
+    event = JSON.parse(event)
+    let a = this.shellySetNewSchedule(
+      this.addScheduleToOtherSchedules(await this.changeEventToShellyFormat(event),await this.scheduleFromShellyToCsv()))
+    return a
+      
     
   }
 
@@ -107,7 +109,10 @@ module.exports = class TalkToShelly {
     return activityDescription
   }
 
-  addScheduleToOtherSchedules (newEvents, currentSchedule){return newEvents += currentSchedule}  
+  addScheduleToOtherSchedules (newEvents, currentSchedule)
+  { console.log(newEvents)
+    console.log(currentSchedule)
+    return newEvents += currentSchedule}  
   
 
   removeEventFromSchedule(eventToRemove, schedule) {

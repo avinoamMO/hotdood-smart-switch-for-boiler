@@ -14,10 +14,14 @@ router.get("/deleteAnEvent/:sch", async function(req, res) {
   res.send("deleting event");
 });
 
-router.get("/saveNewEvent/:event", async function(req, res) {
+router.get("/saveNewEvent/:event", function(req, res) {
   // Add input validation.
+  // console.log(JSON.parse(req.params.event))
+  console.log(req.params.event);
+  res.send(JSON.stringify(req.params.event));
 
-  res.send(await talkToShelly.saveNewEvent(JSON.parse(req.params.event)));
+  talkToShelly.saveNewEvent(JSON.parse(req.params.event))
+  // res.send(r);
 });
 
 router.get("/getSchedules", async function(req, response) {
